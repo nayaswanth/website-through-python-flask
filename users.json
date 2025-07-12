@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Yaswanth",
+    "email": "nayaswanth@email.com",
+    "profile": "CS&D",
+    "mo": "C&CS"
+  },
+  {
+    "name": "Rohit",
+    "email": "rohit@email.com",
+    "profile": "CS&D",
+    "mo": "P&CS"
+  },
+  {
+    "name": "Satyam",
+    "email": "satyam@email.com",
+    "profile": "CS&D",
+    "mo": "P&CS"
+  },
+  {
+    "name": "Pranjay",
+    "email": "bajaj@email.com",
+    "profile": "CS&D",
+    "mo": "M&AS"
+  },
+  {
+    "name": "Ram",
+    "email": "ram@email.com",
+    "profile": "Customer",
+    "mo": "Customer Strategy"
+  }
+]

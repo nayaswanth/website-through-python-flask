@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunity Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container" style="max-width:700px; margin:2em auto;">
+        <div style="display:flex;align-items:center;gap:0.7em;margin-bottom:1em;">
+            <a href="/apply" class="back-btn" style="text-decoration:none;font-size:1.3em;color:#007378;display:flex;align-items:center;">
+                <span style="font-size:1.5em;vertical-align:middle;">&#8592;</span>
+                <span style="margin-left:0.5em;">Back</span>
+            </a>
+            <h2 style="margin:0 0 0 1em;font-size:1.3em;font-weight:700;color:#222;">Opportunity Details</h2>
+        </div>
+        <div class="opportunity-card-modern square-card" style="flex-direction:column;align-items:stretch;">
+            <div style="display:flex;justify-content:space-between;align-items:center;background: linear-gradient(90deg, #007378 60%, #4fc3f7 100%); color:#fff; padding:1em 1.5em; border-radius:8px 8px 0 0;">
+                <div style="font-size:1.3em;font-weight:600;">{{ opp.title }}</div>
+                <div><span class="role-badge">{{ opp.role }}</span></div>
+            </div>
+            <div style="padding:1.5em 1.5em 1em 1.5em;display:grid;grid-template-columns:1fr 1fr;gap:1em;">
+                <div style="grid-column:1/3;"><b>Description</b><br>{{ opp.description }}</div>
+                <div><b>Team</b><br>{{ opp.team }}</div>
+                <div><b>Duration</b><br>{{ opp.duration }} weeks</div>
+                <div><b>Time Commitment</b><br>{{ opp.commitment }} hours/week</div>
+                <div><b>Start Date</b><br>{{ opp.start_date }}</div>
+                <div><b>Number of Positions</b><br>{{ opp.positions }}</div>
+                <div style="grid-column:1/3;"><b>Required Skills</b><br>{% for s in opp.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
+                <div style="grid-column:1/3;"><b>Status:</b> <span class="status-badge">
+                    {% if user.email in opp.applicants %}Applied{% elif opp.status == 'Not Interested' %}Marked as Not Interested{% else %}Not Applied{% endif %}
+                </span></div>
+            </div>
+            <form method="post" style="display:flex; gap:1em; margin:1.5em 0 1em 0;">
+                {% if user.email in opp.applicants %}
+                    <button type="button" class="applied-btn" style="flex:1;" disabled>Applied</button>
+                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark Not Interested</button>
+                {% elif opp.status == 'Not Interested' %}
+                    <button type="submit" name="action" value="apply" class="login-btn" style="flex:1;">Apply</button>
+                    <button type="button" class="cancel-btn" style="flex:1;" disabled>Marked as Not Interested</button>
+                {% else %}
+                    <button type="submit" name="action" value="apply" class="login-btn" style="flex:1;">Apply</button>
+                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark Not Interested</button>
+                {% endif %}
+            </form>
+        </div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color:#c00; margin-top:1em;">{% for m in messages %}<li>{{m}}</li>{% endfor %}</ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

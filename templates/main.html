@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FI'nder - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header-bar">
+        <span class="app-title">FI'nder</span>
+        <div class="tab-bar right">
+            <a class="tab {% if active_tab == 'home' %}active{% endif %}" href="/home">🏠 Home</a>
+            <a class="tab {% if active_tab == 'apply' %}active{% endif %}" href="/apply">🔍 Apply</a>
+            <a class="tab {% if active_tab == 'create' %}active{% endif %}" href="/create-opportunity">➕ Create Opportunity</a>
+            <a class="tab {% if active_tab == 'profile' %}active{% endif %}" href="/profile">� Profile</a>
+        </div>
+    </div>
+    <div class="container">
+        {% if active_tab == 'profile' %}
+            <div class="profile-card-modern">
+                <div class="profile-avatar-modern">{{ user.name[0]|upper }}</div>
+                <div class="profile-name-modern">{{ user.name }}</div>
+                <div class="profile-info-modern">
+                    <div><b>Email:</b> {{ user.email }}</div>
+                    <div><b>Profile:</b> {{ user.profile }}</div>
+                    <div><b>MO Details:</b> {{ user.mo }}</div>
+                </div>
+                <form method="post" action="/logout" style="margin-top:2em;">
+                    <button type="submit" class="logout-btn">Logout</button>
+                </form>
+            </div>
+        {% elif active_tab == 'create' %}
+            <div class="opportunity-form-card">
+                <h2>Post New Opportunity</h2>
+                <form method="post" action="/create-opportunity">
+                    <div class="form-row">
+                        <label for="title">Opportunity Title</label>
+                        <input name="title" id="title" type="text" placeholder="e.g. Internship Team Support" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="3" placeholder="Describe the opportunity..." required style="width:100%;padding:0.7em 1em;border-radius:6px;border:1px solid #cfd8dc;background:#f7f9fa;"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label for="role">Role(s)</label>
+                        <select name="role" id="role" multiple required style="min-width:200px;">
+                            <option value="Consultant">Consultant</option>
+                            <option value="Senior Consultant">Senior Consultant</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Analyst">Analyst</option>
+                        </select>
+                        <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
+                    </div>
+                    <div class="form-row">
+                        <label for="team">Team</label>
+                        <input name="team" id="team" type="text" placeholder="e.g. Internship Team" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="duration">Duration (weeks)</label>
+                        <input name="duration" id="duration" type="number" min="1" placeholder="e.g. 8" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="commitment">Time Commitment (hours/week)</label>
+                        <input name="commitment" id="commitment" type="number" min="1" placeholder="e.g. 5" required>
+                    </div>
+                    <div class="form-row">
+                        <label for="start_date">Start Date</label>
+                        <input name="start_date" id="start_date" type="date" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Required Skills</label>
+                        <div id="skills-list" class="skills-list"></div>
+                        <input name="skill_input" id="skill_input" type="text" placeholder="Add a required skill">
+                        <button type="button" id="add-skill-btn" class="add-skill-btn">Add</button>
+                        <input type="hidden" name="skills" id="skills-hidden">
+                    </div>
+                    <div class="form-row">
+                        <label for="positions">Number of Positions</label>
+                        <input name="positions" id="positions" type="number" min="1" placeholder="e.g. 2" required>
+                    </div>
+                    <div class="form-row form-row-actions" style="justify-content: flex-end;">
+                        <button type="button" class="cancel-btn" onclick="window.location.href='/home'">Cancel</button>
+                        <button type="submit" class="login-btn">Post</button>
+                    </div>
+                </form>
+            </div>
+            <script>
+            // Minimal JS for skills add/remove (no navigation logic)
+            const skills = [];
+            const skillsList = document.getElementById('skills-list');
+            const skillInput = document.getElementById('skill_input');
+            const skillsHidden = document.getElementById('skills-hidden');
+            document.getElementById('add-skill-btn').onclick = function() {
+                const val = skillInput.value.trim();
+                if(val && !skills.includes(val)) {
+                    skills.push(val);
+                    updateSkills();
+                    skillInput.value = '';
+                }
+            };
+            function updateSkills() {
+                skillsList.innerHTML = '';
+                skills.forEach((s, i) => {
+                    const tag = document.createElement('span');
+                    tag.className = 'skill-tag';
+                    tag.innerHTML = s + ' <span class="remove-skill" data-i="'+i+'">&times;</span>';
+                    skillsList.appendChild(tag);
+                });
+                skillsHidden.value = skills.join(',');
+            }
+            skillsList.onclick = function(e) {
+                if(e.target.classList.contains('remove-skill')) {
+                    skills.splice(e.target.dataset.i, 1);
+                    updateSkills();
+                }
+            };
+            </script>
+        {% elif active_tab == 'apply' %}
+            <h2 style="text-align:center;">Find Opportunities</h2>
+            <div class="opportunity-list" style="display:flex;flex-direction:column;align-items:center;">
+                {% for o in opportunities %}
+                <div class="opportunity-card-modern square-card">
+                    <div class="opp-details-left">
+                        <div class="opp-title">{{ o.title }}</div>
+                        <div class="opp-meta">Role: {{ o.role }} | Team: {{ o.team }}</div>
+                        <div class="opp-meta">Duration: {{ o.duration }} weeks | Time: {{ o.commitment }} hours/week</div>
+                        <div class="opp-meta">Start: {{ o.start_date }}</div>
+                        <div class="opp-meta">Skills: {% for s in o.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
+                        <div class="opp-meta">Status: <span class="status-badge">{{ o.status or 'Not Applied' }}</span></div>
+                    </div>
+                    <div class="opp-actions-right">
+                        <a href="/opportunity/{{ o.id }}" class="view-details-btn">View Details</a>
+                        {% if user.email in o.applicants %}
+                            <button class="applied-btn" disabled>Applied</button>
+                        {% else %}
+                            <form method="post" action="/opportunity/{{ o.id }}" style="display:inline;">
+                                <button type="submit" name="action" value="apply" class="apply-btn">Apply</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div style="margin:2em 0; color:#888;">No opportunities found.</div>
+                {% endfor %}
+            </div>
+        {% elif active_tab == 'home' %}
+            <div class="home-tabs" style="justify-content:center;">
+                <a href="?tab=created" class="home-tab {% if home_tab == 'created' %}active{% endif %}">Opportunities Created</a>
+                <a href="?tab=applied" class="home-tab {% if home_tab == 'applied' %}active{% endif %}">Opportunities Applied</a>
+            </div>
+            <div class="home-tab-content" style="display:flex;flex-direction:column;align-items:center;">
+                {% if home_tab == 'applied' %}
+                    <div class="square-card home-card-list">
+                        <ul style="margin:0;">
+                        {% for o in applied %}<li><b>{{o.title}}</b> | {{o.duration}} weeks | {{o.skills}} | Status: {{o.status or 'Pending'}}</li>{% else %}<li>No opportunities applied yet.</li>{% endfor %}
+                        </ul>
+                    </div>
+                {% else %}
+                    <div class="square-card home-card-list">
+                        <ul style="margin:0;">
+                        {% for o in created %}
+                            {% set open_bg = '#c4e321' if o.status == 'Open' else '#e0e0e0' %}
+                            {% set close_bg = '#c00' if o.status == 'Closed' else '#e0e0e0' %}
+                            <li style="display:flex;align-items:center;justify-content:space-between;gap:1em;">
+                                <span><b>{{o.title}}</b> | {{o.duration}} weeks | {{o.skills}} | Positions: {{o.positions}}</span>
+                                <span style="display:flex;align-items:center;gap:0.5em;">
+                                    <form method="post" action="/update-status/{{o.id}}" style="display:inline;">
+                                        <input type="hidden" name="status" value="Open">
+                                        <button type="submit" class="status-btn" style="background: {{open_bg}}; color: #007378; border:none; border-radius:1em; padding:0.3em 1.2em; font-weight:600; margin-right:0.5em; cursor:pointer;">Open</button>
+                                    </form>
+                                    <form method="post" action="/update-status/{{o.id}}" style="display:inline;">
+                                        <input type="hidden" name="status" value="Closed">
+                                        <button type="submit" class="status-btn" style="background: {{close_bg}}; color: #fff; border:none; border-radius:1em; padding:0.3em 1.2em; font-weight:600; margin-right:0.5em; cursor:pointer;">Close</button>
+                                    </form>
+                                    <button class="applicants-btn" onclick="showApplicants({{o.id}})" style="background:#4fc3f7;color:#fff;border:none;border-radius:1em;padding:0.3em 1.2em;font-weight:600;cursor:pointer;">{{o.applicants|length}} Applied</button>
+                                </span>
+                            </li>
+                        {% else %}<li>No opportunities created yet.</li>{% endfor %}
+                        </ul>
+                    </div>
+                    <div id="applicants-modal" class="modal" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.3);align-items:center;justify-content:center;z-index:1000;">
+                        <div class="modal-content" style="background:#fff;padding:2em 2.5em;border-radius:12px;max-width:400px;min-width:280px;position:relative;">
+                            <span onclick="closeApplicants()" style="position:absolute;top:1em;right:1em;font-size:1.5em;cursor:pointer;">&times;</span>
+                            <h3>Applicants</h3>
+                            <ul id="applicants-list" style="list-style:none;padding:0;margin:1em 0 0 0;"></ul>
+                        </div>
+                    </div>
+                    <script>
+                    // Show applicants popup
+                    function showApplicants(oppId) {
+                        const opps = {{ created|tojson }};
+                        const users = {{ users|tojson }};
+                        const opp = opps.find(o => o.id === oppId);
+                        const list = document.getElementById('applicants-list');
+                        list.innerHTML = '';
+                        if (opp && opp.applicants && opp.applicants.length > 0) {
+                            opp.applicants.forEach(email => {
+                                const user = users.find(u => u.email === email);
+                                if (user) {
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `<b>${user.name}</b> <span style='color:#888;font-size:0.95em;'>(${user.profile})</span><br><span style='font-size:0.97em;'>Skills: ${user.skills || '-'}</span>`;
+                                    list.appendChild(li);
+                                }
+                            });
+                        } else {
+                            const li = document.createElement('li');
+                            li.textContent = 'No applicants yet.';
+                            list.appendChild(li);
+                        }
+                        document.getElementById('applicants-modal').style.display = 'flex';
+                    }
+                    function closeApplicants() {
+                        document.getElementById('applicants-modal').style.display = 'none';
+                    }
+                    </script>
+                {% endif %}
+            </div>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color:#c00; margin-top:1em;">{% for m in messages %}<li>{{m}}</li>{% endfor %}</ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

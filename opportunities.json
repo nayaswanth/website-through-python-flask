@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "title": "Internship oppty",
+    "role": "Consultant",
+    "team": "Internship team",
+    "duration": "8 weeks",
+    "commitment": "1 hour/ day",
+    "start_date": "Jun 1st, 2025",
+    "skills": "PMO, Team Management",
+    "openings": 2,
+    "createdBy": "nayaswanth@email.com",
+    "createdByName": "Yaswanth",
+    "createdAt": "Jul 10, 2025 01:10 PM",
+    "applicants": [
+      "nayaswanth@email.com",
+      "rohit@email.com",
+      "satyam@email.com",
+      "ram@email.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 2,
+    "title": "FInder Website Creation",
+    "role": "Consultant, Analyst",
+    "team": "FInder",
+    "duration": "8",
+    "commitment": "1",
+    "start_date": "2025-07-10",
+    "skills": "Webiste",
+    "openings": 1,
+    "createdBy": "rohit@email.com",
+    "createdByName": "Rohit",
+    "createdAt": "Jul 10, 2025 01:51 PM",
+    "applicants": [
+      "rohit@email.com",
+      "nayaswanth@email.com",
+      "satyam@email.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 3,
+    "title": "L&D Consultant",
+    "role": "Consultant, Analyst",
+    "team": "L&D Team",
+    "duration": "1 Week",
+    "commitment": "1 hour/day",
+    "start_date": "2025-07-10",
+    "skills": "Data Analysis,Deck Preparation",
+    "openings": 2,
+    "createdBy": "satyam@email.com",
+    "createdByName": "Satyam",
+    "createdAt": "Jul 10, 2025 07:26 PM",
+    "applicants": [
+      "bajaj@email.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 4,
+    "title": "Financial Comparitive Analyis",
+    "role": "Senior Consultant, Analyst",
+    "team": "CVS Health",
+    "duration": "8 weeks",
+    "commitment": "5 hours/week",
+    "start_date": "2025-07-12",
+    "skills": "Data Analysis,Deck preparation",
+    "openings": 2,
+    "createdBy": "bajaj@email.com",
+    "createdByName": "Pranjay",
+    "createdAt": "Jul 11, 2025 09:49 AM",
+    "applicants": [
+      "ram@email.com"
+    ],
+    "status": "Applied"
+  }
+]
