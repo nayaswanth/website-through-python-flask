@@ -15,10 +15,9 @@
     "applicants": [
       "nayaswanth@email.com",
       "rohit@email.com",
-      "satyam@email.com",
-      "ram@email.com"
+      "satyam@email.com"
     ],
-    "status": "Applied"
+    "status": "Closed"
   },
   {
     "id": 2,
@@ -38,7 +37,10 @@
       "nayaswanth@email.com",
       "satyam@email.com"
     ],
-    "status": "Applied"
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Rejected"
+    }
   },
   {
     "id": 3,
@@ -72,8 +74,144 @@
     "createdByName": "Pranjay",
     "createdAt": "Jul 11, 2025 09:49 AM",
     "applicants": [
-      "ram@email.com"
+      "abc@gmail.com"
     ],
     "status": "Applied"
+  },
+  {
+    "id": 5,
+    "title": "Opp by ABC",
+    "role": "Consultant, Senior Consultant, Manager",
+    "team": "FINDER",
+    "duration": "2",
+    "commitment": "3",
+    "start_date": "2025-07-29",
+    "skills": "",
+    "openings": 3,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 01:09 PM",
+    "applicants": [
+      "yer@gmail.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 6,
+    "title": "RFP-Pricing Transformation",
+    "role": "Consultant",
+    "team": "PSS",
+    "duration": "3 weeks",
+    "commitment": "3 hrs/day",
+    "start_date": "2025-07-31",
+    "skills": "Pricing",
+    "openings": 2,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 03:14 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 7,
+    "title": "Check 3",
+    "role": "Consultant, Senior Consultant, Manager",
+    "team": "check 3",
+    "duration": "1",
+    "commitment": "1",
+    "description": "asd",
+    "start_date": "2025-07-15",
+    "skills": "dsf",
+    "openings": 2,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 05:49 PM",
+    "applicants": [],
+    "status": "Closed"
+  },
+  {
+    "id": 8,
+    "title": "check 12",
+    "role": "Consultant, Senior Consultant",
+    "team": "ched",
+    "duration": "2",
+    "commitment": "1",
+    "description": "pldsa",
+    "start_date": "2025-07-16",
+    "skills": "presentation,excel",
+    "openings": 2,
+    "createdBy": "yer@gmail.com",
+    "createdByName": "avi",
+    "createdAt": "Jul 11, 2025 06:04 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 9,
+    "title": "Check",
+    "role": "Manager",
+    "team": "Check",
+    "duration": 1,
+    "commitment": 1,
+    "description": "check",
+    "start_date": "2025-07-13",
+    "skills": "presentation",
+    "openings": 1,
+    "createdBy": "nayaswanth@email.com",
+    "createdByName": "Yaswanth",
+    "createdAt": "Jul 16, 2025 10:00 AM",
+    "applicants": [
+      "rohit@email.com",
+      "nayaswanth@email.com"
+    ],
+    "status": "Not Interested",
+    "applicants_status": {
+      "rohit@email.com": "Rejected",
+      "nayaswanth@email.com": "Accepted"
+    }
+  },
+  {
+    "id": 10,
+    "title": "Demo",
+    "role": "Senior Consultant",
+    "team": "asdf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "sadsa",
+    "start_date": "2025-07-10",
+    "skills": "sadf",
+    "openings": 1,
+    "createdBy": "hello123@gmail.com",
+    "createdByName": "hello",
+    "createdAt": "Jul 16, 2025 04:20 PM",
+    "applicants": [
+      "nayaswanth@email.com"
+    ],
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Accepted"
+    }
+  },
+  {
+    "id": 11,
+    "title": "Demo 2",
+    "role": "Manager",
+    "team": "asdf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asdf",
+    "start_date": "2025-07-03",
+    "skills": "asdf",
+    "openings": 1,
+    "createdBy": "hello123@gmail.com",
+    "createdByName": "hello",
+    "createdAt": "Jul 16, 2025 04:24 PM",
+    "applicants": [
+      "nayaswanth@email.com"
+    ],
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Rejected"
+    }
   }
 ]
