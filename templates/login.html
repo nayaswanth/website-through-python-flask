@@ -8,11 +8,11 @@
 </head>
 <body>
     <div class="container login-container">
-        <img class="deloitte-img" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Deloitte.svg" alt="Deloitte Logo" />
+        <!-- <img class="img" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Deloitte.svg" alt="Deloitte Logo" /> -->
         <h2>FI'nder</h2>
         <form method="post" action="/login" class="login-form">
             <input name="email" type="email" placeholder="Enter your email" required><br>
-            <button type="submit" class="login-btn">Login</button>
+            <button type="submit" class="center-login-btn">Login</button>
         </form>
         {% if show_signup %}
         <form method="post" action="/signup" class="signup-form">
@@ -20,7 +20,7 @@
             <input name="email" type="email" value="{{ email }}" placeholder="Email" required><br>
             <input name="profile" type="text" placeholder="Offering Profile" required><br>
             <input name="mo" type="text" placeholder="MO Details" required><br>
-            <button type="submit" class="login-btn">Sign Up</button>
+            <button type="submit" class="center-login-btn">Sign Up</button>
         </form>
         {% endif %}
         {% if error %}
