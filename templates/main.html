@@ -74,6 +74,30 @@
                 </div>
                 <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
                     <div style="flex:1;min-width:0;">
+                        <label for="type_of_fi">Type of FI</label>
+                        <select name="type_of_fi" id="type_of_fi" required style="width:100%;box-sizing:border-box;">
+                            <option value="Proposals/POV">Proposals/POV</option>
+                            <option value="CS&D Ops">CS&D Ops</option>
+                            <option value="Domain/Industry Ops">Domain/Industry Ops</option>
+                            <option value="Others/None">Others/None</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;min-width:0;">
+                        <label for="domain">Domain</label>
+                        <select name="domain" id="domain" required style="width:100%;box-sizing:border-box;">
+                            <option value="Cross Domain">Cross Domain</option>
+                            <option value="Customer & Commercial">Customer & Commercial</option>
+                            <option value="Agency">Agency</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Commerce">Commerce</option>
+                            <option value="Pricing and Sales">Pricing and Sales</option>
+                            <option value="Service">Service</option>
+                            <option value="Innovation and Product">Innovation and Product</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                    <div style="flex:1;min-width:0;">
                         <label for="duration">Duration (No. of Weeks)</label>
                         <input name="duration" id="duration" type="number" min="1" value="1" placeholder="e.g. 8" required style="width:100%;box-sizing:border-box;padding:0.7em 1em;font-size:1em;">
                     </div>
@@ -139,26 +163,44 @@
             </script>
         {% elif active_tab == 'apply' %}
             <h2>Find Opportunities</h2>
-            <form method="get" id="status-filter-form" style="margin-bottom:1.5em;">
-                <label for="status-filter" style="font-weight:500;">Filter by Status:</label>
-                <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();" style="margin-left:0.5em;">
-                    <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
-                    <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
-                    <option value="Not Applied" {% if request.args.get('status') == 'Not Applied' %}selected{% endif %}>Not Applied</option>
-                    <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
-                    <option value="Closed" {% if request.args.get('status') == 'Closed' %}selected{% endif %}>Closed</option>
-                </select>
+            <form method="get" id="status-filter-form" style="margin-bottom:1.5em; display:flex; gap:2em; align-items:center;">
+                <div style="display:flex; align-items:center; gap:0.5em;">
+                    <label for="status-filter" style="font-weight:500;">Filter by Status:</label>
+                    <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();">
+                        <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
+                        <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
+                        <option value="Not Applied" {% if request.args.get('status') == 'Not Applied' %}selected{% endif %}>Not Applied</option>
+                        <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
+                        <option value="Closed" {% if request.args.get('status') == 'Closed' %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+                <div style="display:flex; align-items:center; gap:0.5em;">
+                    <label for="domain-filter" style="font-weight:500;">Filter by Domain:</label>
+                    <select name="domain" id="domain-filter" onchange="document.getElementById('status-filter-form').submit();">
+                        <option value="all" {% if request.args.get('domain', 'all') == 'all' %}selected{% endif %}>All</option>
+                        <option value="Cross Domain" {% if request.args.get('domain') == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
+                        <option value="Customer & Commercial" {% if request.args.get('domain') == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
+                        <option value="Agency" {% if request.args.get('domain') == 'Agency' %}selected{% endif %}>Agency</option>
+                        <option value="Marketing" {% if request.args.get('domain') == 'Marketing' %}selected{% endif %}>Marketing</option>
+                        <option value="Commerce" {% if request.args.get('domain') == 'Commerce' %}selected{% endif %}>Commerce</option>
+                        <option value="Pricing and Sales" {% if request.args.get('domain') == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
+                        <option value="Service" {% if request.args.get('domain') == 'Service' %}selected{% endif %}>Service</option>
+                        <option value="Innovation and Product" {% if request.args.get('domain') == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
+                    </select>
+                </div>
             </form>
             <div class="opportunity-list">
                 {% set selected_status = request.args.get('status', 'all') %}
+                {% set selected_domain = request.args.get('domain', 'all') %}
                 {% set filtered_opps = [] %}
                 {% for o in opportunities %}
                     {% set is_applied = user.email in o.applicants %}
-                    {% if selected_status == 'all' or
+                    {% set domain_match = (selected_domain == 'all' or (o.domain == selected_domain)) %}
+                    {% if domain_match and (selected_status == 'all' or
                           (selected_status == 'Applied' and is_applied) or
                           (selected_status == 'Not Applied' and not is_applied) or
                           (selected_status == 'Open' and o.status == 'Open') or
-                          (selected_status == 'Closed' and o.status == 'Closed') %}
+                          (selected_status == 'Closed' and o.status == 'Closed')) %}
                         {% set _ = filtered_opps.append(o) %}
                     {% endif %}
                 {% endfor %}

@@ -213,5 +213,45 @@
     "applicants_status": {
       "nayaswanth@email.com": "Rejected"
     }
+  },
+  {
+    "id": 12,
+    "title": "Fin Impact modelling",
+    "role": "Consultant, Senior Consultant",
+    "team": "CS&D",
+    "duration": 3,
+    "commitment": 3,
+    "description": "Working on excel to create output on various scenerios",
+    "start_date": "2025-07-31",
+    "skills": "Excel,Data Analysis",
+    "openings": 2,
+    "createdBy": "satyam@gmail.com",
+    "createdByName": "Kumar Satyam",
+    "createdAt": "Jul 21, 2025 11:42 AM",
+    "applicants": [
+      "satyam@gmail.com",
+      "abc@gmail.com"
+    ],
+    "status": "Closed",
+    "not_interested": []
+  },
+  {
+    "id": 13,
+    "title": "Post by ABC",
+    "role": "Consultant",
+    "team": "CSD",
+    "duration": 2,
+    "commitment": 4,
+    "description": "Need to work",
+    "start_date": "2025-07-24",
+    "skills": "Python",
+    "openings": 1,
+    "type_of_fi": "CS&D Ops",
+    "domain": "Commerce",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 21, 2025 01:19 PM",
+    "applicants": [],
+    "status": "Open"
   }
 ]

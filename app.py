@@ -176,9 +176,24 @@ def home():
     opportunities = get_opportunities()
     applied = [o for o in opportunities if 'applicants' in o and user['email'] in o['applicants']]
     created = [o for o in opportunities if o.get('createdBy') == user['email']]
+    # For created opportunities, show applicants details
+    created_with_applicants = []
+    users = get_users()
+    for o in created:
+        applicants = []
+        for email in o.get('applicants', []):
+            u = next((x for x in users if x['email'].lower() == email.lower()), None)
+            applicants.append({
+                'email': email,
+                'name': u['name'] if u else email,
+                'profile': u['profile'] if u else '',
+                'skills': u['mo'] if u else ''
+            })
+        o['applicants_details'] = applicants
+        created_with_applicants.append(o)
     # Home tab switching
     home_tab = request.args.get('tab', 'created')
-    return render_template('main.html', user=user, applied=applied, created=created, opportunities=opportunities, active_tab='home', home_tab=home_tab)
+    return render_template('main.html', user=user, applied=applied, created=created_with_applicants, opportunities=opportunities, active_tab='home', home_tab=home_tab)
 
 
 # Profile tab
@@ -208,6 +223,8 @@ def create_opportunity():
         # Skills from hidden field
         skills = request.form['skills']
         openings = int(request.form['openings'])
+        type_of_fi = request.form['type_of_fi']
+        domain = request.form['domain']
         from datetime import datetime
         opps = get_opportunities()
         new_opp = {
@@ -221,6 +238,8 @@ def create_opportunity():
             'start_date': start_date,
             'skills': skills,
             'openings': openings,
+            'type_of_fi': type_of_fi,
+            'domain': domain,
             'createdBy': user['email'],
             'createdByName': user['name'],
             'createdAt': datetime.now().strftime('%b %d, %Y %I:%M %p'),
@@ -261,8 +280,34 @@ def opportunity_details(opp_id):
     if not opp:
         flash('Opportunity not found.')
         return redirect(url_for('apply'))
-    # Application logic removed: POST requests for apply/not_interested are no longer handled.
-    return render_template('opportunity_details.html', user=user, opp=opp)
+    applied = False
+    not_interested = False
+    if 'applicants' not in opp:
+        opp['applicants'] = []
+    if 'not_interested' not in opp:
+        opp['not_interested'] = []
+    if user['email'] in opp['applicants']:
+        applied = True
+    if user['email'] in opp['not_interested']:
+        not_interested = True
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'apply':
+            if user['email'] not in opp['applicants']:
+                opp['applicants'].append(user['email'])
+                if user['email'] in opp['not_interested']:
+                    opp['not_interested'].remove(user['email'])
+                save_opportunities(opps)
+            applied = True
+        elif action == 'not_interested':
+            if user['email'] not in opp['not_interested']:
+                opp['not_interested'].append(user['email'])
+                if user['email'] in opp['applicants']:
+                    opp['applicants'].remove(user['email'])
+                save_opportunities(opps)
+            not_interested = True
+        return redirect(url_for('opportunity_details', opp_id=opp_id))
+    return render_template('opportunity_details.html', user=user, opp=opp, applied=applied, not_interested=not_interested)
 # Logout
 @app.route('/logout', methods=['POST'])
 def logout():
