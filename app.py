@@ -84,7 +84,7 @@ def edit_opportunity(opp_id):
         opp['commitment'] = request.form['commitment']
         opp['start_date'] = request.form['start_date']
         opp['skills'] = request.form['skills']
-        opp['openings'] = int(request.form['openings'])
+        # opp['openings'] = int(request.form['openings'])
         save_opportunities(opps)
         flash('Opportunity updated!')
         return redirect(url_for('home'))
@@ -156,12 +156,13 @@ def login():
 def signup():
     name = request.form['name'].strip()
     email = request.form['email'].strip().lower()
+    role = request.form['role'].strip()
     profile = request.form['profile'].strip()
     mo = request.form['mo'].strip()
     users = get_users()
     if any(u['email'].lower() == email for u in users):
         return render_template('login.html', show_signup=True, error='Email already exists.', email=email)
-    user = {"name": name, "email": email, "profile": profile, "mo": mo}
+    user = {"name": name, "email": email, "role": role, "profile": profile, "mo": mo}
     users.append(user)
     save_users(users)
     session['user'] = user
@@ -220,9 +221,9 @@ def create_opportunity():
         commitment = int(request.form['commitment'])
         start_date = request.form['start_date']
         description = request.form['description']
-        # Skills from hidden field
-        skills = request.form['skills']
-        openings = int(request.form['openings'])
+        # Skills from multi-select dropdown
+        skills = request.form.getlist('skills')
+        skills = ', '.join(skills)
         type_of_fi = request.form['type_of_fi']
         domain = request.form['domain']
         from datetime import datetime
@@ -237,7 +238,7 @@ def create_opportunity():
             'description': description,
             'start_date': start_date,
             'skills': skills,
-            'openings': openings,
+            # 'openings': openings,
             'type_of_fi': type_of_fi,
             'domain': domain,
             'createdBy': user['email'],
@@ -304,6 +305,10 @@ def opportunity_details(opp_id):
                 opp['not_interested'].append(user['email'])
                 if user['email'] in opp['applicants']:
                     opp['applicants'].remove(user['email'])
+                # Set status to Not Interested for this user
+                if 'user_status' not in opp:
+                    opp['user_status'] = {}
+                opp['user_status'][user['email']] = 'Not Interested'
                 save_opportunities(opps)
             not_interested = True
         return redirect(url_for('opportunity_details', opp_id=opp_id))

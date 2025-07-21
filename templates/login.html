@@ -18,6 +18,13 @@
         <form method="post" action="/signup" class="signup-form">
             <input name="name" type="text" placeholder="Full Name" required><br>
             <input name="email" type="email" value="{{ email }}" placeholder="Email" required><br>
+            <select name="role" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="">Select Role</option>
+                <option value="Consultant">Consultant</option>
+                <option value="Senior Consultant">Senior Consultant</option>
+                <option value="Manager">Manager</option>
+                <option value="Analyst">Analyst</option>
+            </select><br>
             <input name="profile" type="text" placeholder="Offering Profile" required><br>
             <input name="mo" type="text" placeholder="MO Details" required><br>
             <button type="submit" class="center-login-btn">Sign Up</button>

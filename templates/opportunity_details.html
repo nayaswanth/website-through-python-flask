@@ -18,7 +18,15 @@
         <div class="opportunity-card-modern" style="flex-direction:column;align-items:stretch;">
             <div style="display:flex;justify-content:space-between;align-items:center;background: linear-gradient(90deg, #007378 60%, #4fc3f7 100%); color:#fff; padding:1em 1.5em; border-radius:8px 8px 0 0;">
                 <div style="font-size:1.3em;font-weight:600;">{{ opp.title }}</div>
-                <div><span class="role-badge">{{ opp.role }}</span></div>
+                <div><span class="status-badge">
+                    {% if opp.user_status and opp.user_status.get(user.email) == 'Not Interested' %}
+                        Not Interested
+                    {% elif user.email in opp.applicants %}
+                        Applied
+                    {% else %}
+                        Not Applied
+                    {% endif %}
+                </span></div>
             </div>
             <div style="padding:1.5em 1.5em 1em 1.5em;display:grid;grid-template-columns:1fr 1fr;gap:1em;">
                 <div><b>Team</b><br>{{ opp.team }}</div>
@@ -28,20 +36,17 @@
                 <div><b>Type of FI</b><br>{{ opp.type_of_fi }}</div>
                 <div><b>Domain</b><br>{{ opp.domain }}</div>
                 <div style="grid-column:1/3;"><b>Required Skills</b><br>{% for s in opp.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
-                <div style="grid-column:1/3;"><b>Status:</b> <span class="status-badge">
-                    {% if user.email in opp.applicants %}Applied{% else %}Not Applied{% endif %}
-                </span></div>
+                <div style="grid-column:1/3;"><b>Role</b>: <span class="role-badge">{{ opp.role }}</span></div>
             </div>
             <form method="post" style="display:flex; gap:1em; margin:1.5em 0 1em 0;">
-                {% if user.email in opp.applicants %}
-                    <button type="button" class="applied-btn" style="flex:1;" disabled>Applied</button>
-                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark Not Interested</button>
-                {% elif opp.status == 'Not Interested' %}
-                    <button type="submit" name="action" value="apply" class="login-btn" style="flex:1;">Apply</button>
+                {% if opp.user_status and opp.user_status.get(user.email) == 'Not Interested' %}
                     <button type="button" class="cancel-btn" style="flex:1;" disabled>Marked as Not Interested</button>
+                {% elif user.email in opp.applicants %}
+                    <button type="button" class="applied-btn" style="flex:1;" disabled>Applied</button>
+                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark as Not Interested</button>
                 {% else %}
                     <button type="submit" name="action" value="apply" class="login-btn" style="flex:1;">Apply</button>
-                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark Not Interested</button>
+                    <button type="submit" name="action" value="not_interested" class="cancel-btn" style="flex:1;">Mark as Not Interested</button>
                 {% endif %}
             </form>
         </div>

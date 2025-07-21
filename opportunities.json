@@ -251,7 +251,125 @@
     "createdBy": "abc@gmail.com",
     "createdByName": "ABC Gupta",
     "createdAt": "Jul 21, 2025 01:19 PM",
+    "applicants": [
+      "role@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
+  },
+  {
+    "id": 14,
+    "title": "dsfg",
+    "role": "Senior Consultant",
+    "team": "adf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asdf",
+    "start_date": "2025-07-08",
+    "skills": "",
+    "openings": 1,
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "role@gmail.com",
+    "createdByName": "role",
+    "createdAt": "Jul 21, 2025 04:08 PM",
+    "applicants": [],
+    "status": "Open",
+    "not_interested": [
+      "role@gmail.com"
+    ],
+    "user_status": {
+      "role@gmail.com": "Not Interested"
+    }
+  },
+  {
+    "id": 15,
+    "title": "adsfadf",
+    "role": "Senior Consultant",
+    "team": "adf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "adf",
+    "start_date": "2025-07-18",
+    "skills": "Report Writing",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:25 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Rejected"
+    }
+  },
+  {
+    "id": 16,
+    "title": "asd",
+    "role": "Senior Consultant",
+    "team": "as",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asd",
+    "start_date": "2025-07-02",
+    "skills": "Document Structuring",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:25 PM",
     "applicants": [],
     "status": "Open"
+  },
+  {
+    "id": 17,
+    "title": "pl",
+    "role": "Senior Consultant",
+    "team": "klm",
+    "duration": 1,
+    "commitment": 1,
+    "description": "klnm",
+    "start_date": "2025-07-10",
+    "skills": "Presentation",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:28 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Accepted"
+    }
+  },
+  {
+    "id": 18,
+    "title": "qwerty",
+    "role": "Senior Consultant",
+    "team": "sad",
+    "duration": 1,
+    "commitment": 1,
+    "description": "sad",
+    "start_date": "2025-07-03",
+    "skills": "Presentation",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:31 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Accepted"
+    }
   }
 ]

@@ -37,6 +37,7 @@
                 <div class="profile-name-modern">{{ user.name }}</div>
                 <div class="profile-info-modern">
                     <div><b>Email:</b> {{ user.email }}</div>
+                    <div><b>Role:</b> {{ user.role }}</div>
                     <div><b>Profile:</b> {{ user.profile }}</div>
                     <div><b>MO Details:</b> {{ user.mo }}</div>
                 </div>
@@ -114,17 +115,29 @@
                     <label for="start_date">Start Date</label>
                     <input name="start_date" id="start_date" type="date" placeholder="DD-MM-YYYY" required style="width:100%;box-sizing:border-box;">
                 </div>
-                <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
-                    <label>Required Skills</label>
-                    <div id="skills-list" class="skills-list"></div>
-                    <input name="skill_input" id="skill_input" type="text" placeholder="Add a required skill" style="width:100%;box-sizing:border-box;">
-                    <button type="button" id="add-skill-btn" class="add-skill-btn">Add</button>
-                    <input type="hidden" name="skills" id="skills-hidden">
-                </div>
-                <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
-                    <label for="openings">Total Open Positions</label>
-                    <input name="openings" id="openings" type="number" min="1" value="1" placeholder="e.g. 2" required style="width:100%;box-sizing:border-box;">
-                </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label>Required Skills</label>
+                        <!-- Old skill input commented out -->
+                        <!--
+                        <div id="skills-list" class="skills-list"></div>
+                        <input name="skill_input" id="skill_input" type="text" placeholder="Add a required skill" style="width:100%;box-sizing:border-box;">
+                        <button type="button" id="add-skill-btn" class="add-skill-btn">Add</button>
+                        <input type="hidden" name="skills" id="skills-hidden">
+                        -->
+                        <select name="skills" id="skills" multiple required style="width:100%;height:120px;box-sizing:border-box;vertical-align:top;">
+                            <option value="Research">Research</option>
+                            <option value="Presentation">Presentation</option>
+                            <option value="Data Analysis">Data Analysis</option>
+                            <option value="Document Structuring">Document Structuring</option>
+                            <option value="Team Lead">Team Lead</option>
+                            <option value="Strategic Planning">Strategic Planning</option>
+                            <option value="Report Writing">Report Writing</option>
+                            <option value="Project Coordination">Project Coordination</option>
+                            <option value="Process Mapping & Improvement">Process Mapping & Improvement</option>
+                            <option value="Change Management">Change Management</option>
+                        </select>
+                        <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
+                    </div>
                 <div class="form-row form-row-actions" style="width:80%;margin:auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;margin-bottom:0;gap:2em;">
                     <button type="button" class="cancel-btn" onclick="window.location.href='/home'">Cancel</button>
                     <button type="submit" class="login-btn">Post</button>
@@ -164,29 +177,32 @@
         {% elif active_tab == 'apply' %}
             <h2>Find Opportunities</h2>
             <form method="get" id="status-filter-form" style="margin-bottom:1.5em; display:flex; gap:2em; align-items:center;">
-                <div style="display:flex; align-items:center; gap:0.5em;">
-                    <label for="status-filter" style="font-weight:500;">Filter by Status:</label>
-                    <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();">
-                        <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
-                        <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
-                        <option value="Not Applied" {% if request.args.get('status') == 'Not Applied' %}selected{% endif %}>Not Applied</option>
-                        <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
-                        <option value="Closed" {% if request.args.get('status') == 'Closed' %}selected{% endif %}>Closed</option>
-                    </select>
-                </div>
-                <div style="display:flex; align-items:center; gap:0.5em;">
-                    <label for="domain-filter" style="font-weight:500;">Filter by Domain:</label>
-                    <select name="domain" id="domain-filter" onchange="document.getElementById('status-filter-form').submit();">
-                        <option value="all" {% if request.args.get('domain', 'all') == 'all' %}selected{% endif %}>All</option>
-                        <option value="Cross Domain" {% if request.args.get('domain') == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
-                        <option value="Customer & Commercial" {% if request.args.get('domain') == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
-                        <option value="Agency" {% if request.args.get('domain') == 'Agency' %}selected{% endif %}>Agency</option>
-                        <option value="Marketing" {% if request.args.get('domain') == 'Marketing' %}selected{% endif %}>Marketing</option>
-                        <option value="Commerce" {% if request.args.get('domain') == 'Commerce' %}selected{% endif %}>Commerce</option>
-                        <option value="Pricing and Sales" {% if request.args.get('domain') == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
-                        <option value="Service" {% if request.args.get('domain') == 'Service' %}selected{% endif %}>Service</option>
-                        <option value="Innovation and Product" {% if request.args.get('domain') == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
-                    </select>
+                <div style="display:flex; align-items:center; gap:0.5em; background:#f7f7f7; padding:1em 2em; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+                    <div style="display:flex; flex-direction:column; align-items:flex-start; margin-right:2em;">
+                        <label for="status-filter" style="font-weight:600; margin-bottom:0.4em; color:#333;">Status</label>
+                        <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();" style="padding:0.6em 1.2em; border-radius:6px; border:1px solid #ccc; font-size:1em; background:#fff; min-width:120px;">
+                            <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
+                            <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
+                            <option value="Not Applied" {% if request.args.get('status') == 'Not Applied' %}selected{% endif %}>Not Applied</option>
+                            <option value="Not Interested" {% if request.args.get('status') == 'Not Interested' %}selected{% endif %}>Not Interested</option>
+                            <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
+                            <option value="Closed" {% if request.args.get('status') == 'Closed' %}selected{% endif %}>Closed</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; flex-direction:column; align-items:flex-start;">
+                        <label for="domain-filter" style="font-weight:600; margin-bottom:0.4em; color:#333;">Domain</label>
+                        <select name="domain" id="domain-filter" onchange="document.getElementById('status-filter-form').submit();" style="padding:0.6em 1.2em; border-radius:6px; border:1px solid #ccc; font-size:1em; background:#fff; min-width:120px;">
+                            <option value="all" {% if request.args.get('domain', 'all') == 'all' %}selected{% endif %}>All</option>
+                            <option value="Cross Domain" {% if request.args.get('domain') == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
+                            <option value="Customer & Commercial" {% if request.args.get('domain') == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
+                            <option value="Agency" {% if request.args.get('domain') == 'Agency' %}selected{% endif %}>Agency</option>
+                            <option value="Marketing" {% if request.args.get('domain') == 'Marketing' %}selected{% endif %}>Marketing</option>
+                            <option value="Commerce" {% if request.args.get('domain') == 'Commerce' %}selected{% endif %}>Commerce</option>
+                            <option value="Pricing and Sales" {% if request.args.get('domain') == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
+                            <option value="Service" {% if request.args.get('domain') == 'Service' %}selected{% endif %}>Service</option>
+                            <option value="Innovation and Product" {% if request.args.get('domain') == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
+                        </select>
+                    </div>
                 </div>
             </form>
             <div class="opportunity-list">
@@ -195,10 +211,12 @@
                 {% set filtered_opps = [] %}
                 {% for o in opportunities %}
                     {% set is_applied = user.email in o.applicants %}
+                    {% set is_not_interested = o.user_status and o.user_status.get(user.email) == 'Not Interested' %}
                     {% set domain_match = (selected_domain == 'all' or (o.domain == selected_domain)) %}
                     {% if domain_match and (selected_status == 'all' or
                           (selected_status == 'Applied' and is_applied) or
-                          (selected_status == 'Not Applied' and not is_applied) or
+                          (selected_status == 'Not Applied' and not is_applied and not is_not_interested) or
+                          (selected_status == 'Not Interested' and is_not_interested) or
                           (selected_status == 'Open' and o.status == 'Open') or
                           (selected_status == 'Closed' and o.status == 'Closed')) %}
                         {% set _ = filtered_opps.append(o) %}
@@ -250,11 +268,13 @@
                                     </div>
                                     <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.7em;">
                                         <span style="font-weight: 500;">Application</span>
-                                        <span class="status-badge {% if o.status == 'Closed' %}closed-status-badge{% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}rejected-status-badge{% else %}inreview-status-badge{% endif %}">
+                                        <span class="status-badge {% if o.status == 'Closed' %}closed-status-badge{% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}rejected-status-badge{% elif o.applicants_status and o.applicants_status[user.email] == 'Accepted' %}accepted-status-badge{% else %}inreview-status-badge{% endif %}">
                                             {% if o.status == 'Closed' %}
                                                 Closed
                                             {% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}
                                                 Rejected
+                                            {% elif o.applicants_status and o.applicants_status[user.email] == 'Accepted' %}
+                                                Accepted
                                             {% else %}
                                                 In Review
                                             {% endif %}
@@ -275,7 +295,7 @@
                                 <div class="opp-title" style="font-size:1.25em; font-weight:700; color:#21c421; margin-bottom:0.3em;">{{ o.title }}</div>
                                 <div class="opp-meta"><b>Duration:</b> {{ o.duration }}</div>
                                 <div class="opp-meta"><b>Skills:</b> {% for s in o.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
-                                <div class="opp-meta"><b>Openings:</b> {{ o.openings }}</div>
+                                <!-- <div class="opp-meta"><b>Openings:</b> {{ o.openings }}</div> -->
                                 <!-- Status button to the right, remove status column -->
                             </div>
                             <div class="opp-actions-right" style="min-width:180px; align-items:center; gap:0.7em;">
@@ -397,10 +417,10 @@
                         <button type="button" id="add-skill-btn" class="add-skill-btn">Add</button>
                         <input type="hidden" name="skills" id="skills-hidden" value="{{ opp.skills }}">
                     </div>
-                    <div class="form-row">
+                    <!-- <div class="form-row">
                         <label for="openings">Openings</label>
                         <input name="openings" id="openings" type="number" min="1" value="{{ opp.openings }}" required>
-                    </div>
+                    </div> -->
                     <div class="form-row form-row-actions">
                         <button type="button" class="cancel-btn" onclick="window.location.href='/home'">Cancel</button>
                         <button type="submit" class="login-btn">Update</button>

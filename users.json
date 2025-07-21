@@ -46,5 +46,19 @@
     "email": "satyam@gmail.com",
     "profile": "CS&D",
     "mo": "Pricing"
+  },
+  {
+    "name": "role",
+    "email": "role@gmail.com",
+    "role": "Senior Consultant",
+    "profile": "rolecheck",
+    "mo": "rolecheck1"
+  },
+  {
+    "name": "Hello",
+    "email": "hello@gmail.com",
+    "role": "Manager",
+    "profile": "lo",
+    "mo": "sd"
   }
 ]
