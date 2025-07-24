@@ -83,7 +83,7 @@
     "title": "Opp by ABC",
     "role": "Consultant, Senior Consultant, Manager",
     "team": "FINDER",
-    "duration": "2",
+    "duration": "3",
     "commitment": "3",
     "start_date": "2025-07-29",
     "skills": "",
@@ -371,5 +371,42 @@
     "applicants_status": {
       "hello@gmail.com": "Accepted"
     }
+  },
+  {
+    "id": 19,
+    "title": "aaaa",
+    "role": "Manager",
+    "duration": 2,
+    "commitment": 1,
+    "description": "aaaaabbbb cccc",
+    "start_date": "2025-07-25",
+    "skills": "Document Structuring",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 24, 2025 03:02 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 20,
+    "title": "ppppppp",
+    "role": "Senior Consultant, Consultant",
+    "duration": 2,
+    "commitment": 1,
+    "description": "pppppppppp hhhhhh kkkkkkk",
+    "start_date": "2025-07-26",
+    "skills": "Data Analysis",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 24, 2025 03:03 PM",
+    "applicants": [
+      "abc@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
   }
 ]

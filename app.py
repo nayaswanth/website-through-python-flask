@@ -79,12 +79,13 @@ def edit_opportunity(opp_id):
     if request.method == 'POST':
         opp['title'] = request.form['title']
         opp['role'] = ', '.join(request.form.getlist('role'))
-        opp['team'] = request.form['team']
-        opp['duration'] = request.form['duration']
-        opp['commitment'] = request.form['commitment']
+        opp['duration'] = int(request.form['duration'])
+        opp['commitment'] = int(request.form['commitment'])
         opp['start_date'] = request.form['start_date']
-        opp['skills'] = request.form['skills']
-        # opp['openings'] = int(request.form['openings'])
+        opp['description'] = request.form['description']
+        opp['skills'] = ', '.join(request.form.getlist('skills'))
+        opp['type_of_fi'] = request.form['type_of_fi']
+        opp['domain'] = request.form['domain']
         save_opportunities(opps)
         flash('Opportunity updated!')
         return redirect(url_for('home'))
@@ -216,7 +217,6 @@ def create_opportunity():
         title = request.form['title']
         # Multi-select roles
         role = request.form.getlist('role')
-        team = request.form['team']
         duration = int(request.form['duration'])
         commitment = int(request.form['commitment'])
         start_date = request.form['start_date']
@@ -232,7 +232,6 @@ def create_opportunity():
             'id': (max([o['id'] for o in opps]) + 1) if opps else 1,
             'title': title,
             'role': ', '.join(role),
-            'team': team,
             'duration': duration,
             'commitment': commitment,
             'description': description,

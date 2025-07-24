@@ -53,21 +53,18 @@
                     <input name="title" id="title" type="text" placeholder="e.g. Internship Team Support" required style="width:100%;box-sizing:border-box;">
                 </div>
                 <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
-                    <label for="team">Team</label>
-                    <input name="team" id="team" type="text" placeholder="e.g. CS&D" required style="width:100%;box-sizing:border-box;">
+                    <label for="description">Description</label>
+                    <textarea name="description" id="description" rows="4" minlength="2" maxlength="100" placeholder="Enter a brief project summary (2-100 characters)" required style="width:100%;height:90px;box-sizing:border-box;"></textarea>
+                    <span class="form-hint" style="font-size:0.9em;color:#888;">2-100 characters</span>
                 </div>
                 <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
                     <div style="flex:1;min-width:0;">
-                        <label for="description">Description</label>
-                        <textarea name="description" id="description" rows="4" maxlength="100" placeholder="Enter a brief description (max 100 characters)" required style="width:100%;height:90px;box-sizing:border-box;"></textarea>
-                        <span class="form-hint" style="font-size:0.9em;color:#888;">Max 100 characters</span>
-                    </div>
-                    <div style="flex:1;min-width:0;">
                         <label for="role">Role(s)</label>
                         <select name="role" id="role" multiple required style="width:100%;height:90px;box-sizing:border-box;vertical-align:top;">
-                            <option value="Consultant">Consultant</option>
-                            <option value="Senior Consultant">Senior Consultant</option>
+                            <option value="Senior Manager">Senior Manager</option>
                             <option value="Manager">Manager</option>
+                            <option value="Senior Consultant">Senior Consultant</option>
+                            <option value="Consultant">Consultant</option>
                             <option value="Analyst">Analyst</option>
                         </select>
                         <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
@@ -94,6 +91,7 @@
                             <option value="Pricing and Sales">Pricing and Sales</option>
                             <option value="Service">Service</option>
                             <option value="Innovation and Product">Innovation and Product</option>
+                            <option value="Others/NA">Others/NA</option>
                         </select>
                     </div>
                 </div>
@@ -182,11 +180,9 @@
                         <label for="status-filter" style="font-weight:600; margin-bottom:0.4em; color:#333;">Status</label>
                         <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();" style="padding:0.6em 1.2em; border-radius:6px; border:1px solid #ccc; font-size:1em; background:#fff; min-width:120px;">
                             <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
-                            <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
-                            <option value="Not Applied" {% if request.args.get('status') == 'Not Applied' %}selected{% endif %}>Not Applied</option>
-                            <option value="Not Interested" {% if request.args.get('status') == 'Not Interested' %}selected{% endif %}>Not Interested</option>
                             <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
-                            <option value="Closed" {% if request.args.get('status') == 'Closed' %}selected{% endif %}>Closed</option>
+                            <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
+                            <option value="Not Interested" {% if request.args.get('status') == 'Not Interested' %}selected{% endif %}>Not Interested</option>
                         </select>
                     </div>
                     <div style="display:flex; flex-direction:column; align-items:flex-start;">
@@ -215,10 +211,8 @@
                     {% set domain_match = (selected_domain == 'all' or (o.domain == selected_domain)) %}
                     {% if domain_match and (selected_status == 'all' or
                           (selected_status == 'Applied' and is_applied) or
-                          (selected_status == 'Not Applied' and not is_applied and not is_not_interested) or
                           (selected_status == 'Not Interested' and is_not_interested) or
-                          (selected_status == 'Open' and o.status == 'Open') or
-                          (selected_status == 'Closed' and o.status == 'Closed')) %}
+                          (selected_status == 'Open' and o.status == 'Open')) %}
                         {% set _ = filtered_opps.append(o) %}
                     {% endif %}
                 {% endfor %}
@@ -227,10 +221,7 @@
                     <div class="opportunity-card-modern">
                         <div class="opp-details-left">
                             <div class="opp-title">{{ o.title }}</div>
-                            <div class="opp-meta">Role: {{ o.role }} | Team: {{ o.team }}</div>
-                            <div class="opp-meta">Duration: {{ o.duration }} | Time: {{ o.commitment }}</div>
-                            <div class="opp-meta">Start: {{ o.start_date }}</div>
-                            <div class="opp-meta">Skills: {% for s in o.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
+                            <div class="opp-meta">Start Date: {{ o.start_date }}</div>
                             <div class="opp-meta">Status: <span class="status-badge">{{ o.status or 'Not Applied' }}</span></div>
                         </div>
                         <div class="opp-actions-right">
@@ -380,85 +371,93 @@
             <div class="opportunity-form-card">
                 <h2>Edit Opportunity</h2>
                 <form method="post" action="">
-                    <div class="form-row">
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
                         <label for="title">Opportunity Title</label>
-                        <input name="title" id="title" type="text" value="{{ opp.title }}" required>
+                        <input name="title" id="title" type="text" value="{{ opp.title }}" required style="width:100%;box-sizing:border-box;">
                     </div>
-                    <div class="form-row">
-                        <label for="role">Role(s)</label>
-                        <select name="role" id="role" multiple required style="min-width:200px;">
-                            <option value="Consultant" {% if 'Consultant' in opp.role %}selected{% endif %}>Consultant</option>
-                            <option value="Senior Consultant" {% if 'Senior Consultant' in opp.role %}selected{% endif %}>Senior Consultant</option>
-                            <option value="Manager" {% if 'Manager' in opp.role %}selected{% endif %}>Manager</option>
-                            <option value="Analyst" {% if 'Analyst' in opp.role %}selected{% endif %}>Analyst</option>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="4" minlength="2" maxlength="100" required style="width:100%;height:90px;box-sizing:border-box;">{{ opp.description }}</textarea>
+                        <span class="form-hint" style="font-size:0.9em;color:#888;">2-100 characters</span>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="role">Role(s)</label>
+                            <select name="role" id="role" multiple required style="width:100%;height:90px;box-sizing:border-box;vertical-align:top;">
+                                <option value="Senior Manager" {% if 'Senior Manager' in opp.role %}selected{% endif %}>Senior Manager</option>
+                                <option value="Manager" {% if 'Manager' in opp.role %}selected{% endif %}>Manager</option>
+                                <option value="Senior Consultant" {% if 'Senior Consultant' in opp.role %}selected{% endif %}>Senior Consultant</option>
+                                <option value="Consultant" {% if 'Consultant' in opp.role %}selected{% endif %}>Consultant</option>
+                                <option value="Analyst" {% if 'Analyst' in opp.role %}selected{% endif %}>Analyst</option>
+                            </select>
+                            <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
+                        </div>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="type_of_fi">Type of FI</label>
+                            <select name="type_of_fi" id="type_of_fi" required style="width:100%;box-sizing:border-box;">
+                                <option value="Proposals/POV" {% if opp.type_of_fi == 'Proposals/POV' %}selected{% endif %}>Proposals/POV</option>
+                                <option value="CS&D Ops" {% if opp.type_of_fi == 'CS&D Ops' %}selected{% endif %}>CS&D Ops</option>
+                                <option value="Domain/Industry Ops" {% if opp.type_of_fi == 'Domain/Industry Ops' %}selected{% endif %}>Domain/Industry Ops</option>
+                                <option value="Others/None" {% if opp.type_of_fi == 'Others/None' %}selected{% endif %}>Others/None</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <label for="domain">Domain</label>
+                            <select name="domain" id="domain" required style="width:100%;box-sizing:border-box;">
+                                <option value="Cross Domain" {% if opp.domain == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
+                                <option value="Customer & Commercial" {% if opp.domain == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
+                                <option value="Agency" {% if opp.domain == 'Agency' %}selected{% endif %}>Agency</option>
+                                <option value="Marketing" {% if opp.domain == 'Marketing' %}selected{% endif %}>Marketing</option>
+                                <option value="Commerce" {% if opp.domain == 'Commerce' %}selected{% endif %}>Commerce</option>
+                                <option value="Pricing and Sales" {% if opp.domain == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
+                                <option value="Service" {% if opp.domain == 'Service' %}selected{% endif %}>Service</option>
+                                <option value="Innovation and Product" {% if opp.domain == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
+                                <option value="Others/NA" {% if opp.domain == 'Others/NA' %}selected{% endif %}>Others/NA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="duration">Duration (No. of Weeks)</label>
+                            <input name="duration" id="duration" type="number" min="1" value="{{ opp.duration }}" required style="width:100%;box-sizing:border-box;padding:0.7em 1em;font-size:1em;">
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <label for="commitment">No. of Hours / Week</label>
+                            <select name="commitment" id="commitment" required style="width:100%;box-sizing:border-box;padding:0.7em 1em;font-size:1em;height:auto;">
+                                {% for i in range(1,11) %}
+                                <option value="{{i}}" {% if opp.commitment == i|string %}selected{% endif %}>{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label for="start_date">Start Date</label>
+                        <input name="start_date" id="start_date" type="date" value="{{ opp.start_date }}" required style="width:100%;box-sizing:border-box;">
+                    </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label>Required Skills</label>
+                        <select name="skills" id="skills" multiple required style="width:100%;height:120px;box-sizing:border-box;vertical-align:top;">
+                            <option value="Research" {% if 'Research' in opp.skills %}selected{% endif %}>Research</option>
+                            <option value="Presentation" {% if 'Presentation' in opp.skills %}selected{% endif %}>Presentation</option>
+                            <option value="Data Analysis" {% if 'Data Analysis' in opp.skills %}selected{% endif %}>Data Analysis</option>
+                            <option value="Document Structuring" {% if 'Document Structuring' in opp.skills %}selected{% endif %}>Document Structuring</option>
+                            <option value="Team Lead" {% if 'Team Lead' in opp.skills %}selected{% endif %}>Team Lead</option>
+                            <option value="Strategic Planning" {% if 'Strategic Planning' in opp.skills %}selected{% endif %}>Strategic Planning</option>
+                            <option value="Report Writing" {% if 'Report Writing' in opp.skills %}selected{% endif %}>Report Writing</option>
+                            <option value="Project Coordination" {% if 'Project Coordination' in opp.skills %}selected{% endif %}>Project Coordination</option>
+                            <option value="Process Mapping & Improvement" {% if 'Process Mapping & Improvement' in opp.skills %}selected{% endif %}>Process Mapping & Improvement</option>
+                            <option value="Change Management" {% if 'Change Management' in opp.skills %}selected{% endif %}>Change Management</option>
                         </select>
                         <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
                     </div>
-                    <div class="form-row">
-                        <label for="team">Team</label>
-                        <input name="team" id="team" type="text" value="{{ opp.team }}" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="duration">Duration</label>
-                        <input name="duration" id="duration" type="text" value="{{ opp.duration }}" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="commitment">Time Commitment</label>
-                        <input name="commitment" id="commitment" type="text" value="{{ opp.commitment }}" required>
-                    </div>
-                    <div class="form-row">
-                        <label for="start_date">Start Date</label>
-                        <input name="start_date" id="start_date" type="date" value="{{ opp.start_date }}" required>
-                    </div>
-                    <div class="form-row">
-                        <label>Required Skills</label>
-                        <div id="skills-list" class="skills-list"></div>
-                        <input name="skill_input" id="skill_input" type="text" placeholder="Add a required skill">
-                        <button type="button" id="add-skill-btn" class="add-skill-btn">Add</button>
-                        <input type="hidden" name="skills" id="skills-hidden" value="{{ opp.skills }}">
-                    </div>
-                    <!-- <div class="form-row">
-                        <label for="openings">Openings</label>
-                        <input name="openings" id="openings" type="number" min="1" value="{{ opp.openings }}" required>
-                    </div> -->
-                    <div class="form-row form-row-actions">
+                    <div class="form-row form-row-actions" style="width:80%;margin:auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;margin-bottom:0;gap:2em;">
                         <button type="button" class="cancel-btn" onclick="window.location.href='/home'">Cancel</button>
                         <button type="submit" class="login-btn">Update</button>
                     </div>
                 </form>
             </div>
-            <script>
-            // Minimal JS for skills add/remove (edit mode)
-            const skillsEdit = (document.getElementById('skills-hidden').value || '').split(',').filter(s => s.trim());
-            const skillsListEdit = document.getElementById('skills-list');
-            const skillInputEdit = document.getElementById('skill_input');
-            const skillsHiddenEdit = document.getElementById('skills-hidden');
-            function updateSkillsEdit() {
-                skillsListEdit.innerHTML = '';
-                skillsEdit.forEach((s, i) => {
-                    const tag = document.createElement('span');
-                    tag.className = 'skill-tag';
-                    tag.innerHTML = s + ' <span class="remove-skill" data-i="'+i+'">&times;</span>';
-                    skillsListEdit.appendChild(tag);
-                });
-                skillsHiddenEdit.value = skillsEdit.join(',');
-            }
-            document.getElementById('add-skill-btn').onclick = function() {
-                const val = skillInputEdit.value.trim();
-                if(val && !skillsEdit.includes(val)) {
-                    skillsEdit.push(val);
-                    updateSkillsEdit();
-                    skillInputEdit.value = '';
-                }
-            };
-            skillsListEdit.onclick = function(e) {
-                if(e.target.classList.contains('remove-skill')) {
-                    skillsEdit.splice(e.target.dataset.i, 1);
-                    updateSkillsEdit();
-                }
-            };
-            updateSkillsEdit();
-            </script>
         {% endif %}
         {% with messages = get_flashed_messages() %}
           {% if messages %}
