@@ -25,8 +25,27 @@
                 <option value="Manager">Manager</option>
                 <option value="Analyst">Analyst</option>
             </select><br>
-            <input name="profile" type="text" placeholder="Offering Profile" required><br>
-            <input name="mo" type="text" placeholder="MO Details" required><br>
+            <label for="domain">Domain</label>
+            <select name="domain" id="domain" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="Cross Domain">Cross Domain</option>
+                <option value="Customer & Commercial">Customer & Commercial</option>
+                <option value="Agency">Agency</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Pricing and Sales">Pricing and Sales</option>
+                <option value="Service">Service</option>
+                <option value="Innovation and Product">Innovation and Product</option>
+                <option value="Others/NA">Others/NA</option>
+            </select><br>
+            <label for="industry">Industry</label>
+            <select name="industry" id="industry" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="Life Sciences & Health Care">Life Sciences & Health Care</option>
+                <option value="Retail & Consumer Products">Retail & Consumer Products</option>
+                <option value="Energy, Resources & Industrial">Energy, Resources & Industrial</option>
+                <option value="Technology, Media & Telecom">Technology, Media & Telecom</option>
+                <option value="Financial Services & Insurance">Financial Services & Insurance</option>
+                <option value="N/A">N/A</option>
+            </select><br>
             <button type="submit" class="center-login-btn">Sign Up</button>
         </form>
         {% endif %}

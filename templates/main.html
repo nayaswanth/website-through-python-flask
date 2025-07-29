@@ -36,10 +36,11 @@
                 <div class="profile-avatar-modern">{{ user.name[0]|upper }}</div>
                 <div class="profile-name-modern">{{ user.name }}</div>
                 <div class="profile-info-modern">
+                    <div><b>Name:</b> {{ user.name }}</div>
                     <div><b>Email:</b> {{ user.email }}</div>
                     <div><b>Role:</b> {{ user.role }}</div>
-                    <div><b>Profile:</b> {{ user.profile }}</div>
-                    <div><b>MO Details:</b> {{ user.mo }}</div>
+                    <div><b>Domain:</b> {{ user.domain if user.domain is defined else 'N/A' }}</div>
+                    <div><b>Industry:</b> {{ user.industry if user.industry is defined else 'N/A' }}</div>
                 </div>
                 <form method="post" action="/logout" style="margin-top:2em;">
                     <button type="submit" class="logout-btn">Logout</button>

@@ -1,3 +1,53 @@
+/* Consistent styling for input[type='date'] placeholder and text */
+input[type="date"] {
+  font-family: inherit;
+  font-size: 1rem;
+  color: #222;
+  /* Match other input/select fields if they have specific background/border */
+  border-radius: 6px;
+  border: 1px solid #cce6e8;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+/* Chrome, Safari, Edge */
+input[type="date"]::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+input[type="date"]::-webkit-datetime-edit {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+/* Firefox */
+input[type="date"]::-moz-placeholder {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+input[type="date"]::-moz-datetime-edit {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+/* IE/Edge */
+input[type="date"]:-ms-input-placeholder {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+input[type="date"]::-ms-input-placeholder {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
+/* General fallback */
+input[type="date"]::placeholder {
+  color: #888;
+  font-family: inherit;
+  font-size: 1rem;
+}
 /* Status label styles for Opportunities Applied */
 .status-label {
   font-size: 1em;

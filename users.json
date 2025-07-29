@@ -60,5 +60,19 @@
     "role": "Manager",
     "profile": "lo",
     "mo": "sd"
+  },
+  {
+    "name": "AVC Shah",
+    "email": "avc@gmail.com",
+    "role": "Consultant",
+    "domain": "Marketing",
+    "industry": "Life Sciences & Health Care"
+  },
+  {
+    "name": "New email",
+    "email": "dsgjhwgj@gmail.com",
+    "role": "Senior Consultant",
+    "domain": "Innovation and Product",
+    "industry": "Life Sciences & Health Care"
   }
 ]

@@ -147,6 +147,11 @@ def login():
     email = request.form['email'].strip().lower()
     user = get_user_by_email(email)
     if user:
+        # Ensure domain and industry keys exist for old users
+        if 'domain' not in user:
+            user['domain'] = 'N/A'
+        if 'industry' not in user:
+            user['industry'] = 'N/A'
         session['user'] = user
         return redirect(url_for('home'))
     else:
@@ -158,12 +163,12 @@ def signup():
     name = request.form['name'].strip()
     email = request.form['email'].strip().lower()
     role = request.form['role'].strip()
-    profile = request.form['profile'].strip()
-    mo = request.form['mo'].strip()
+    domain = request.form['domain'].strip()
+    industry = request.form['industry'].strip()
     users = get_users()
     if any(u['email'].lower() == email for u in users):
         return render_template('login.html', show_signup=True, error='Email already exists.', email=email)
-    user = {"name": name, "email": email, "role": role, "profile": profile, "mo": mo}
+    user = {"name": name, "email": email, "role": role, "domain": domain, "industry": industry}
     users.append(user)
     save_users(users)
     session['user'] = user

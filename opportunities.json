@@ -386,8 +386,11 @@
     "createdBy": "abc@gmail.com",
     "createdByName": "ABC Gupta",
     "createdAt": "Jul 24, 2025 03:02 PM",
-    "applicants": [],
-    "status": "Open"
+    "applicants": [
+      "dsgjhwgj@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
   },
   {
     "id": 20,
