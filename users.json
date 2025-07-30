@@ -1,0 +1,79 @@
+[
+  {
+    "name": "Yaswanth",
+    "email": "nayaswanth@email.com",
+    "profile": "CS&D",
+    "mo": "C&CS",
+    "password": "Test@123"
+  },
+  {
+    "name": "Rohit",
+    "email": "rohit@email.com",
+    "profile": "CS&D",
+    "mo": "P&CS"
+  },
+  {
+    "name": "Satyam",
+    "email": "satyam@email.com",
+    "profile": "CS&D",
+    "mo": "P&CS"
+  },
+  {
+    "name": "Pranjay",
+    "email": "bajaj@email.com",
+    "profile": "CS&D",
+    "mo": "M&AS"
+  },
+  {
+    "name": "ABC Gupta",
+    "email": "abc@gmail.com",
+    "profile": "CS&D",
+    "mo": "PSS"
+  },
+  {
+    "name": "avi",
+    "email": "yer@gmail.com",
+    "profile": "CS&D",
+    "mo": "C&CS"
+  },
+  {
+    "name": "hello",
+    "email": "hello123@gmail.com",
+    "profile": "pldsf",
+    "mo": "asdfa"
+  },
+  {
+    "name": "Kumar Satyam",
+    "email": "satyam@gmail.com",
+    "profile": "CS&D",
+    "mo": "Pricing"
+  },
+  {
+    "name": "role",
+    "email": "role@gmail.com",
+    "role": "Senior Consultant",
+    "profile": "rolecheck",
+    "mo": "rolecheck1"
+  },
+  {
+    "name": "Hello",
+    "email": "hello@gmail.com",
+    "role": "Manager",
+    "profile": "lo",
+    "mo": "sd"
+  },
+  {
+    "name": "AVC Shah",
+    "email": "avc@gmail.com",
+    "role": "Consultant",
+    "domain": "Marketing",
+    "industry": "Life Sciences & Health Care"
+  },
+  {
+    "name": "New email",
+    "email": "dsgjhwgj@gmail.com",
+    "role": "Senior Consultant",
+    "domain": "Innovation and Product",
+    "industry": "Life Sciences & Health Care"
+  }
+]

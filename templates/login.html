@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FI'nder - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container login-container">
+        <!-- <img class="img" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Deloitte.svg" alt="Deloitte Logo" /> -->
+        <h2>FI'nder</h2>
+        
+        {% if not show_signup %}
+        <form method="post" action="/login" class="login-form">
+            <input name="email" type="email" placeholder="Enter your email" value="{{ email or '' }}" required><br>
+            <input name="password" type="password" placeholder="Enter your password" required><br>
+            <button type="submit" class="center-login-btn">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 1em; color: #666;">
+            Don't have an account? <a href="#" onclick="showSignup()" style="color: #007378; text-decoration: none; cursor: pointer;">Click here to sign up</a>
+        </p>
+        {% endif %}
+        
+        {% if show_signup %}
+        <form method="post" action="/signup" class="signup-form">
+            <input name="name" type="text" placeholder="Full Name" required><br>
+            <input name="email" type="email" value="{{ email or '' }}" placeholder="Email" required><br>
+            <input name="password" type="password" placeholder="Password (min 6 characters)" required><br>
+            <select name="role" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="">Select Role</option>
+                <option value="Consultant">Consultant</option>
+                <option value="Senior Consultant">Senior Consultant</option>
+                <option value="Manager">Manager</option>
+                <option value="Analyst">Analyst</option>
+            </select><br>
+            <select name="domain" id="domain" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="">Select Domain</option>
+                <option value="Cross Domain">Cross Domain</option>
+                <option value="Customer & Commercial">Customer & Commercial</option>
+                <option value="Agency">Agency</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Pricing and Sales">Pricing and Sales</option>
+                <option value="Service">Service</option>
+                <option value="Innovation and Product">Innovation and Product</option>
+                <option value="Others/NA">Others/NA</option>
+            </select><br>
+            <select name="industry" id="industry" required style="width:100%;margin-bottom:0.7em;padding:0.5em;border-radius:6px;border:1px solid #cce6e8;font-size:1rem;box-sizing:border-box;">
+                <option value="">Select Industry</option>
+                <option value="Life Sciences & Health Care">Life Sciences & Health Care</option>
+                <option value="Retail & Consumer Products">Retail & Consumer Products</option>
+                <option value="Energy, Resources & Industrial">Energy, Resources & Industrial</option>
+                <option value="Technology, Media & Telecom">Technology, Media & Telecom</option>
+                <option value="Finance, Banking & Insurance">Finance, Banking & Insurance</option>
+                <option value="Other">Other</option>
+            </select><br>
+            <button type="submit" class="center-login-btn">Sign Up</button>
+        </form>
+        <p style="text-align: center; margin-top: 1em; color: #666;">
+            Already have an account? <a href="/" style="color: #007378; text-decoration: none;">Login here</a>
+        </p>
+        {% endif %}
+        
+        {% if error %}
+        <div class="error-msg">{{ error }}</div>
+        {% endif %}
+    </div>
+    
+    <script>
+    function showSignup() {
+        // Create a form to submit and show signup page
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/show-signup';
+        document.body.appendChild(form);
+        form.submit();
+    }
+    </script>
+</body>
+</html>

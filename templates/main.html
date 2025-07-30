@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FI'nder - Home</title>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Modern Header matching the image -->
+    <header class="modern-header">
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center py-3 px-4">
+                <div class="logo-section">
+                    <h2 class="mb-0 fw-bold text-primary">Fi'nder</h2>
+                </div>
+                <nav class="nav-links d-flex align-items-center">
+                    <a href="{{ url_for('home') }}" class="nav-link-modern {% if active_tab == 'home' %}active{% endif %}">Home</a>
+                    <a href="{{ url_for('apply') }}" class="nav-link-modern {% if active_tab == 'apply' %}active{% endif %}">Find Opportunity</a>
+                    <a href="{{ url_for('profile') }}" class="nav-link-modern {% if active_tab == 'profile' %}active{% endif %}">My Profile</a>
+                    <a href="{{ url_for('create_opportunity') }}" class="btn-post-opportunity {% if active_tab == 'create' %}active{% endif %}">📝 Post an Opportunity</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    {% if active_tab == 'home' %}
+    <!-- Banner Section -->
+    <section class="banner-section">
+        <div class="container-fluid py-4">
+            <div class="banner-flex">
+                <h1 class="banner-title-horizontal mb-0">Your contribution Starts with <span class="text-primary">Fi!</span></h1>
+                <p class="banner-subtitle-horizontal mb-0">Discover Firm Initiatives that match your skills and passion.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container-fluid my-4">
+        <!-- Tab Navigation -->
+        <div class="d-flex justify-content-center mb-4">
+            <div class="modern-tabs">
+                <a href="?tab=applied" class="tab-button {% if home_tab == 'applied' %}active{% endif %}">
+                    Opportunity Applied
+                </a>
+                <a href="?tab=created" class="tab-button {% if home_tab == 'created' %}active{% endif %}">
+                    Opportunity Posted
+                </a>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content-area">
+            {% if home_tab == 'applied' %}
+                <div class="grid-container">
+                    {% for o in applied %}
+                    <div class="opportunity-card-grid">
+                        <h3>{{ o.title }}</h3>
+                        <div class="tags">
+                            {% for s in o.skills.split(',')[:2] %}
+                            <span class="tag">{{ s.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        <p class="duration-text"><strong>Duration:</strong> {{ o.duration }}</p>
+                        <div class="status-section">
+                            {% if o.status == 'Closed' %}
+                                <div class="status cancelled">Cancelled</div>
+                            {% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}
+                                <div class="status cancelled">Cancelled</div>
+                            {% elif o.applicants_status and o.applicants_status[user.email] == 'Accepted' %}
+                                <div class="status accepted">Accepted</div>
+                            {% else %}
+                                <div class="status in-review">In Review</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <h4 class="text-muted">No opportunities applied yet.</h4>
+                            <p class="text-muted">Start exploring available opportunities to grow your skills!</p>
+                            <a href="/apply" class="btn btn-primary">Browse Opportunities</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="grid-container">
+                    {% for o in created %}
+                    <div class="opportunity-card-grid">
+                        <h3>{{ o.title }}</h3>
+                        <div class="tags">
+                            {% for s in o.skills.split(',')[:2] %}
+                            <span class="tag">{{ s.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        <p class="duration-text"><strong>Duration:</strong> {{ o.duration }}</p>
+                        <div class="status-section">
+                            {% if o.status == 'Closed' %}
+                                <div class="status cancelled">Closed</div>
+                            {% else %}
+                                <div class="status accepted">Active</div>
+                            {% endif %}
+                        </div>
+                        <div class="action-buttons" style="margin-top: 5px;">
+                            <a href="/edit-opportunity/{{ o.id }}" class="btn btn-sm btn-outline-primary" style="font-size: 10px; padding: 2px 6px;">Edit</a>
+                            {% if o.status != 'Closed' %}
+                                <button class="btn btn-sm btn-outline-success" style="font-size: 10px; padding: 2px 6px;" onclick="showApplicantsModal({{ o.id }})">
+                                    {{ o.applicants|length }} Applied
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <h4 class="text-muted">No opportunities posted yet.</h4>
+                            <p class="text-muted">Create your first opportunity to find the right collaborators!</p>
+                            <a href="/create-opportunity" class="btn btn-primary">Post an Opportunity</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% else %}
+    <!-- Content for Other Pages -->
+    <div class="container-fluid mt-4">
+        {% if active_tab == 'profile' %}
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="profile-card-clean">
+                        <div class="profile-header text-center mb-4">
+                            <div class="profile-avatar-large">{{ user.name[0]|upper }}</div>
+                            <h3 class="profile-name-large mt-3">{{ user.name }}</h3>
+                        </div>
+                        <div class="profile-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">{{ user.name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">{{ user.email }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Role:</span>
+                                <span class="detail-value">{{ user.role }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Domain:</span>
+                                <span class="detail-value">{{ user.domain if user.domain is defined else 'N/A' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Industry:</span>
+                                <span class="detail-value">{{ user.industry if user.industry is defined else 'N/A' }}</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-4">
+                            <form method="post" action="{{ url_for('logout') }}" class="d-inline">
+                                <button type="submit" class="btn btn-outline-danger px-4">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% elif active_tab == 'create' %}
+            <!-- Modern Post Opportunity Page -->
+            <div class="post-opportunity-container">
+                <!-- Banner Section -->
+                <div class="post-opportunity-banner">
+                    <h1 class="post-banner-title">Post an opportunity to find interested folks to join!</h1>
+                </div>
+
+                <!-- Form Section -->
+                <div class="post-form-container">
+                    <form method="post" action="{{ url_for('create_opportunity') }}" class="post-opportunity-form">
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-lg-6">
+                                <div class="form-group-modern">
+                                    <label for="title" class="form-label-modern">Opportunity Title *</label>
+                                    <input name="title" id="title" type="text" class="form-control-modern" placeholder="e.g. RFP Support" required>
+                                </div>
+
+                                <div class="form-group-modern">
+                                    <label for="description" class="form-label-modern">Description *</label>
+                                    <textarea name="description" id="description" rows="4" class="form-control-modern" placeholder="Enter Brief Summary..." minlength="2" maxlength="100" required></textarea>
+                                    <small class="form-hint-modern">2-100 characters</small>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group-modern">
+                                            <label for="domain" class="form-label-modern">Domain *</label>
+                                            <select name="domain" id="domain" class="form-control-modern" required>
+                                                <option value="">Select Domain</option>
+                                                <option value="Cross Domain">Cross Domain</option>
+                                                <option value="Customer & Commercial">Customer & Commercial</option>
+                                                <option value="Agency">Agency</option>
+                                                <option value="Marketing">Marketing</option>
+                                                <option value="Commerce">Commerce</option>
+                                                <option value="Pricing and Sales">Pricing and Sales</option>
+                                                <option value="Service">Service</option>
+                                                <option value="Innovation and Product">Innovation and Product</option>
+                                                <option value="Others/NA">Others/NA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group-modern">
+                                            <label for="type_of_fi" class="form-label-modern">Type of FI *</label>
+                                            <select name="type_of_fi" id="type_of_fi" class="form-control-modern" required>
+                                                <option value="">Select Type of FI</option>
+                                                <option value="Proposals/POV">Proposals/POV</option>
+                                                <option value="CS&D Ops">CS&D Ops</option>
+                                                <option value="Domain/Industry Ops">Domain/Industry Ops</option>
+                                                <option value="Others/None">Others/None</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group-modern">
+                                            <label for="start_date" class="form-label-modern">Start Date *</label>
+                                            <input name="start_date" id="start_date" type="date" class="form-control-modern" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group-modern">
+                                            <label for="duration" class="form-label-modern">End Date</label>
+                                            <input name="end_date" id="end_date" type="date" class="form-control-modern">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-modern">
+                                    <label for="commitment" class="form-label-modern">No. of Hours per Week *</label>
+                                    <input name="commitment" id="commitment" type="number" min="1" max="40" class="form-control-modern" placeholder="e.g. 10" required>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-lg-6">
+                                <div class="form-group-modern">
+                                    <label class="form-label-modern">Role Required *</label>
+                                    <div class="checkbox-group-modern">
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="senior_manager" name="role" value="Senior Manager">
+                                            <label class="form-check-label-modern" for="senior_manager">Senior Manager</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="manager" name="role" value="Manager">
+                                            <label class="form-check-label-modern" for="manager">Manager</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="senior_consultant" name="role" value="Senior Consultant" checked>
+                                            <label class="form-check-label-modern" for="senior_consultant">Senior Consultant</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="consultant" name="role" value="Consultant">
+                                            <label class="form-check-label-modern" for="consultant">Consultant</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="analyst" name="role" value="Analyst">
+                                            <label class="form-check-label-modern" for="analyst">Analyst</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group-modern">
+                                    <label class="form-label-modern">Skills Required *</label>
+                                    <div class="checkbox-group-modern">
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="research" name="skills" value="Research">
+                                            <label class="form-check-label-modern" for="research">Research</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="data_analysis" name="skills" value="Data Analysis">
+                                            <label class="form-check-label-modern" for="data_analysis">Data Analysis</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="document_structuring" name="skills" value="Document Structuring" checked>
+                                            <label class="form-check-label-modern" for="document_structuring">Document Structuring</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="presentation" name="skills" value="Presentation">
+                                            <label class="form-check-label-modern" for="presentation">Presentation</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="report_writing" name="skills" value="Report Writing">
+                                            <label class="form-check-label-modern" for="report_writing">Report Writing</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="strategic_planning" name="skills" value="Strategic Planning">
+                                            <label class="form-check-label-modern" for="strategic_planning">Strategic Planning</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="project_coordination" name="skills" value="Project Coordination">
+                                            <label class="form-check-label-modern" for="project_coordination">Project Coordination</label>
+                                        </div>
+                                        <div class="form-check-modern">
+                                            <input class="form-check-input-modern" type="checkbox" id="team_lead" name="skills" value="Team Lead">
+                                            <label class="form-check-label-modern" for="team_lead">Team Lead</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions-modern">
+                                    <button type="button" class="btn-cancel-modern" onclick="window.location.href='{{ url_for('home') }}'">Cancel</button>
+                                    <button type="submit" class="btn-submit-modern">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        {% elif active_tab == 'apply' %}
+            <!-- Modern Find Opportunity Page -->
+            <div class="find-opportunity-container">
+                <!-- Banner Section -->
+                <div class="find-opportunity-banner">
+                    <h1 class="find-banner-title">Find Opportunity to work on that resonates with you.</h1>
+                </div>
+                
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <form method="get" id="status-filter-form" class="filter-form">
+                        <div class="filter-group">
+                            <label for="status-filter" class="filter-label">Status</label>
+                            <select name="status" id="status-filter" onchange="document.getElementById('status-filter-form').submit();" class="filter-select">
+                                <option value="all" {% if request.args.get('status', 'all') == 'all' %}selected{% endif %}>All</option>
+                                <option value="Open" {% if request.args.get('status') == 'Open' %}selected{% endif %}>Open</option>
+                                <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
+                                <option value="Not Interested" {% if request.args.get('status') == 'Not Interested' %}selected{% endif %}>Not Interested</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="domain-filter" class="filter-label">Domain</label>
+                            <select name="domain" id="domain-filter" onchange="document.getElementById('status-filter-form').submit();" class="filter-select">
+                                <option value="all" {% if request.args.get('domain', 'all') == 'all' %}selected{% endif %}>All</option>
+                                <option value="Cross Domain" {% if request.args.get('domain') == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
+                                <option value="Customer & Commercial" {% if request.args.get('domain') == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
+                                <option value="Agency" {% if request.args.get('domain') == 'Agency' %}selected{% endif %}>Agency</option>
+                                <option value="Marketing" {% if request.args.get('domain') == 'Marketing' %}selected{% endif %}>Marketing</option>
+                                <option value="Commerce" {% if request.args.get('domain') == 'Commerce' %}selected{% endif %}>Commerce</option>
+                                <option value="Pricing and Sales" {% if request.args.get('domain') == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
+                                <option value="Service" {% if request.args.get('domain') == 'Service' %}selected{% endif %}>Service</option>
+                                <option value="Innovation and Product" {% if request.args.get('domain') == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Opportunity Cards Grid with Full Width -->
+            <div class="opportunity-cards-grid">
+                {% set selected_status = request.args.get('status', 'all') %}
+                {% set selected_domain = request.args.get('domain', 'all') %}
+                {% set filtered_opps = [] %}
+                {% for o in opportunities %}
+                    {% set is_applied = user.email in o.applicants %}
+                    {% set is_not_interested = o.user_status and o.user_status.get(user.email) == 'Not Interested' %}
+                    {% set domain_match = (selected_domain == 'all' or (o.domain == selected_domain)) %}
+                    {% if domain_match and (selected_status == 'all' or
+                          (selected_status == 'Applied' and is_applied) or
+                          (selected_status == 'Not Interested' and is_not_interested) or
+                          (selected_status == 'Open' and o.status == 'Open')) %}
+                        {% set _ = filtered_opps.append(o) %}
+                    {% endif %}
+                {% endfor %}
+                
+                {% if filtered_opps %}
+                    {% for o in filtered_opps %}
+                    <div class="opportunity-card-compact">
+                        <div class="card-header-compact">
+                            <span class="card-category">{{ o.domain or 'General' }}</span>
+                            <h3 class="card-title">{{ o.title }}</h3>
+                        </div>
+                        <div class="card-body-compact">
+                            <div class="skills-compact">
+                                {% for s in o.skills.split(',')[:2] %}
+                                <span class="skill-tag-compact">{{ s.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                            <p class="duration-compact">Duration: {{ o.duration }}</p>
+                        </div>
+                        <div class="card-footer-compact">
+                            <a href="/opportunity/{{ o.id }}" class="view-details-compact">View Details</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-opportunities">
+                        <i class="fa-solid fa-search"></i>
+                        <h4>No opportunities found</h4>
+                        <p>Try adjusting your filters to see more results.</p>
+                    </div>
+                {% endif %}
+            </div>
+        {% elif active_tab == 'home' %}
+            <div class="home-tabs" style="justify-content:center;">
+                <a href="?tab=applied" class="home-tab {% if home_tab == 'applied' %}active{% endif %}">Opportunities Applied</a>
+                <a href="?tab=created" class="home-tab {% if home_tab == 'created' %}active{% endif %}">Opportunities Created</a>
+            </div>
+            <div class="home-tab-content" style="display:flex; flex-direction:column; align-items:center;">
+                {% if home_tab == 'applied' %}
+                    <div style="width:100%; max-width:650px;">
+                    <h3 style="text-align:center; color:#007378; margin-bottom:1.5em;">📋 Your Applied Opportunities</h3>
+                    {% for o in applied %}
+                        <div class="opportunity-card-modern applied-opportunity-box" style="display: flex; justify-content: space-between; align-items: stretch;">
+                            <div class="opp-details-left" style="flex: 2 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+                                <div class="opp-title" style="font-size:1.25em; font-weight:700; color:#21c421; margin-bottom:0.5em;">{{ o.title }}</div>
+                                <div class="opp-meta" style="margin-bottom:0.3em;"><b>Duration:</b> {{ o.duration }}</div>
+                                <div class="opp-meta"><b>Skills:</b> {% for s in o.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
+                            </div>
+                            <div class="opp-status-right" style="flex: 1 1 180px; min-width: 150px; display: flex; flex-direction: column; justify-content: center; align-items: flex-end; padding-left: 1em;">
+                                <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 0.4em;">Status</div>
+                                <div style="display: flex; flex-direction: column; gap: 0.5em; width: 100%;">
+                                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.7em;">
+                                        <span style="font-weight: 500;">Opportunity</span>
+                                        <span class="status-badge {% if o.status == 'Closed' %}closed-status-badge{% else %}live-status-badge{% endif %}">
+                                            {% if o.status == 'Closed' %}Closed{% else %}Live{% endif %}
+                                        </span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 0.7em;">
+                                        <span style="font-weight: 500;">Application</span>
+                                        <span class="status-badge {% if o.status == 'Closed' %}closed-status-badge{% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}rejected-status-badge{% elif o.applicants_status and o.applicants_status[user.email] == 'Accepted' %}accepted-status-badge{% else %}inreview-status-badge{% endif %}">
+                                            {% if o.status == 'Closed' %}
+                                                Closed
+                                            {% elif o.applicants_status and o.applicants_status[user.email] == 'Rejected' %}
+                                                Rejected
+                                            {% elif o.applicants_status and o.applicants_status[user.email] == 'Accepted' %}
+                                                Accepted
+                                            {% else %}
+                                                In Review
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="margin:2em 0; color:#888; text-align:center; padding:2em; background:#f9f9f9; border-radius:10px;">
+                            <i class="fa-solid fa-clipboard-list" style="font-size:3em; color:#ccc; margin-bottom:1em;"></i>
+                            <p>No opportunities applied yet.</p>
+                            <p><a href="/apply" style="color:#007378; text-decoration:none; font-weight:600;">Browse available opportunities →</a></p>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <div style="width:100%; max-width:650px;">
+                    {% for o in created %}
+                        <div class="opportunity-card-modern created-opportunity-box">
+                            <div class="opp-details-left">
+                                <div class="opp-title" style="font-size:1.25em; font-weight:700; color:#21c421; margin-bottom:0.3em;">{{ o.title }}</div>
+                                <div class="opp-meta"><b>Duration:</b> {{ o.duration }}</div>
+                                <div class="opp-meta"><b>Skills:</b> {% for s in o.skills.split(',') %}<span class="skill-badge">{{ s.strip() }}</span>{% endfor %}</div>
+                                <!-- <div class="opp-meta"><b>Openings:</b> {{ o.openings }}</div> -->
+                                <!-- Status button to the right, remove status column -->
+                            </div>
+                            <div class="opp-actions-right" style="min-width:180px; align-items:center; gap:0.7em;">
+                                <a href="/edit-opportunity/{{ o.id }}" class="edit-btn modern-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                {% if o.status == 'Closed' %}
+                                    <button class="status-btn closed-status-btn" disabled>Closed</button>
+                                {% else %}
+                                    <button class="status-btn created-status-btn" type="button" onclick="showApplicantsModal({{ o.id }})">Applied: {{ o.applicants|length }}</button>
+                                    <form method="post" action="/end-opportunity/{{ o.id }}" style="display:inline;">
+                                        <button type="submit" class="end-btn modern-btn" title="Close"><i class="fa-solid fa-circle-xmark"></i> Close</button>
+                                    </form>
+                                {% endif %}
+        <!-- Applicants Modal -->
+        <div id="applicants-modal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeApplicantsModal()">&times;</span>
+                <h3>Applicants</h3>
+                <div id="applicants-list"></div>
+            </div>
+        </div>
+        <script>
+        // Modal logic
+        function showApplicantsModal(oppId) {
+            debugger;
+            fetch(`/get-applicants/${oppId}`)
+                .then(resp => resp.json())
+                .then(data => {
+                    let html = '';
+                    if(data.applicants.length === 0) {
+                        html = '<div style="color:#888;">No applicants yet.</div>';
+                    } else {
+                        html = '<table class="applicants-table"><tr><th>Name</th><th>Email</th><th>Role</th><th>Skills</th><th>Status</th><th>Action</th></tr>';
+                        data.applicants.forEach(app => {
+                            html += `<tr><td>${app.name}</td><td>${app.email}</td><td>${app.profile||''}</td><td>${app.skills||''}</td><td>${app.status||'Pending'}</td><td>`;
+                            if(app.status === 'Accepted' || app.status === 'Rejected') {
+                                html += app.status;
+                            } else {
+                                html += `<button class='accept-btn' onclick=\"updateApplicantStatus(${oppId},'${app.email}','Accepted')\">Accept</button> <button class='reject-btn' onclick=\"updateApplicantStatus(${oppId},'${app.email}','Rejected')\">Reject</button>`;
+                            }
+                            html += '</td></tr>';
+                        });
+                        html += '</table>';
+                    }
+                    document.getElementById('applicants-list').innerHTML = html;
+                    document.getElementById('applicants-modal').style.display = 'block';
+                });
+        }
+        function closeApplicantsModal() {
+            document.getElementById('applicants-modal').style.display = 'none';
+        }
+        function updateApplicantStatus(oppId, email, status) {
+            fetch(`/update-applicant-status/${oppId}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, status})
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                if(data.success) {
+                    showApplicantsModal(oppId);
+                } else {
+                    alert('Failed to update status');
+                }
+            });
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById('applicants-modal');
+            if (event.target == modal) {
+                closeApplicantsModal();
+            }
+        }
+        </script>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div style="margin:2em 0; color:#888; text-align:center;">No opportunities created yet.</div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% elif active_tab == 'edit' %}
+            <div class="opportunity-form-card">
+                <h2>Edit Opportunity</h2>
+                <form method="post" action="">
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label for="title">Opportunity Title</label>
+                        <input name="title" id="title" type="text" value="{{ opp.title }}" required style="width:100%;box-sizing:border-box;">
+                    </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="4" minlength="2" maxlength="100" required style="width:100%;height:90px;box-sizing:border-box;">{{ opp.description }}</textarea>
+                        <span class="form-hint" style="font-size:0.9em;color:#888;">2-100 characters</span>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="role">Role(s)</label>
+                            <select name="role" id="role" multiple required style="width:100%;height:90px;box-sizing:border-box;vertical-align:top;">
+                                <option value="Senior Manager" {% if 'Senior Manager' in opp.role %}selected{% endif %}>Senior Manager</option>
+                                <option value="Manager" {% if 'Manager' in opp.role %}selected{% endif %}>Manager</option>
+                                <option value="Senior Consultant" {% if 'Senior Consultant' in opp.role %}selected{% endif %}>Senior Consultant</option>
+                                <option value="Consultant" {% if 'Consultant' in opp.role %}selected{% endif %}>Consultant</option>
+                                <option value="Analyst" {% if 'Analyst' in opp.role %}selected{% endif %}>Analyst</option>
+                            </select>
+                            <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
+                        </div>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="type_of_fi">Type of FI</label>
+                            <select name="type_of_fi" id="type_of_fi" required style="width:100%;box-sizing:border-box;">
+                                <option value="Proposals/POV" {% if opp.type_of_fi == 'Proposals/POV' %}selected{% endif %}>Proposals/POV</option>
+                                <option value="CS&D Ops" {% if opp.type_of_fi == 'CS&D Ops' %}selected{% endif %}>CS&D Ops</option>
+                                <option value="Domain/Industry Ops" {% if opp.type_of_fi == 'Domain/Industry Ops' %}selected{% endif %}>Domain/Industry Ops</option>
+                                <option value="Others/None" {% if opp.type_of_fi == 'Others/None' %}selected{% endif %}>Others/None</option>
+                            </select>
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <label for="domain">Domain</label>
+                            <select name="domain" id="domain" required style="width:100%;box-sizing:border-box;">
+                                <option value="Cross Domain" {% if opp.domain == 'Cross Domain' %}selected{% endif %}>Cross Domain</option>
+                                <option value="Customer & Commercial" {% if opp.domain == 'Customer & Commercial' %}selected{% endif %}>Customer & Commercial</option>
+                                <option value="Agency" {% if opp.domain == 'Agency' %}selected{% endif %}>Agency</option>
+                                <option value="Marketing" {% if opp.domain == 'Marketing' %}selected{% endif %}>Marketing</option>
+                                <option value="Commerce" {% if opp.domain == 'Commerce' %}selected{% endif %}>Commerce</option>
+                                <option value="Pricing and Sales" {% if opp.domain == 'Pricing and Sales' %}selected{% endif %}>Pricing and Sales</option>
+                                <option value="Service" {% if opp.domain == 'Service' %}selected{% endif %}>Service</option>
+                                <option value="Innovation and Product" {% if opp.domain == 'Innovation and Product' %}selected{% endif %}>Innovation and Product</option>
+                                <option value="Others/NA" {% if opp.domain == 'Others/NA' %}selected{% endif %}>Others/NA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row flex-row" style="width:80%;margin:auto;margin-bottom:2em;display:flex;gap:4%;">
+                        <div style="flex:1;min-width:0;">
+                            <label for="duration">Duration (No. of Weeks)</label>
+                            <input name="duration" id="duration" type="number" min="1" value="{{ opp.duration }}" required style="width:100%;box-sizing:border-box;padding:0.7em 1em;font-size:1em;">
+                        </div>
+                        <div style="flex:1;min-width:0;">
+                            <label for="commitment">No. of Hours / Week</label>
+                            <select name="commitment" id="commitment" required style="width:100%;box-sizing:border-box;padding:0.7em 1em;font-size:1em;height:auto;">
+                                {% for i in range(1,11) %}
+                                <option value="{{i}}" {% if opp.commitment == i|string %}selected{% endif %}>{{i}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label for="start_date">Start Date</label>
+                        <input name="start_date" id="start_date" type="date" value="{{ opp.start_date }}" required style="width:100%;box-sizing:border-box;">
+                    </div>
+                    <div class="form-row" style="width:80%;margin:auto;margin-bottom:2em;">
+                        <label>Required Skills</label>
+                        <select name="skills" id="skills" multiple required style="width:100%;height:120px;box-sizing:border-box;vertical-align:top;">
+                            <option value="Research" {% if 'Research' in opp.skills %}selected{% endif %}>Research</option>
+                            <option value="Presentation" {% if 'Presentation' in opp.skills %}selected{% endif %}>Presentation</option>
+                            <option value="Data Analysis" {% if 'Data Analysis' in opp.skills %}selected{% endif %}>Data Analysis</option>
+                            <option value="Document Structuring" {% if 'Document Structuring' in opp.skills %}selected{% endif %}>Document Structuring</option>
+                            <option value="Team Lead" {% if 'Team Lead' in opp.skills %}selected{% endif %}>Team Lead</option>
+                            <option value="Strategic Planning" {% if 'Strategic Planning' in opp.skills %}selected{% endif %}>Strategic Planning</option>
+                            <option value="Report Writing" {% if 'Report Writing' in opp.skills %}selected{% endif %}>Report Writing</option>
+                            <option value="Project Coordination" {% if 'Project Coordination' in opp.skills %}selected{% endif %}>Project Coordination</option>
+                            <option value="Process Mapping & Improvement" {% if 'Process Mapping & Improvement' in opp.skills %}selected{% endif %}>Process Mapping & Improvement</option>
+                            <option value="Change Management" {% if 'Change Management' in opp.skills %}selected{% endif %}>Change Management</option>
+                        </select>
+                        <span class="form-hint">(Hold Ctrl/Cmd to select multiple)</span>
+                    </div>
+                    <div class="form-row form-row-actions" style="width:80%;margin:auto;display:flex;flex-direction:row;justify-content:space-between;align-items:center;margin-bottom:0;gap:2em;">
+                        <button type="button" class="cancel-btn" onclick="window.location.href='/home'">Cancel</button>
+                        <button type="submit" class="login-btn">Update</button>
+                    </div>
+                </form>
+            </div>
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color:#c00; margin-top:1em;">{% for m in messages %}<li>{{m}}</li>{% endfor %}</ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+    {% endif %}
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Modal for Applicants (if needed) -->
+    <div id="applicants-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeApplicantsModal()">&times;</span>
+            <h3>Applicants</h3>
+            <div id="applicants-list"></div>
+        </div>
+    </div>
+
+    <script>
+    // Modal logic for applicants
+    function showApplicantsModal(oppId) {
+        fetch(`/get-applicants/${oppId}`)
+            .then(resp => resp.json())
+            .then(data => {
+                let html = '';
+                if(data.applicants.length === 0) {
+                    html = '<div style="color:#888;">No applicants yet.</div>';
+                } else {
+                    html = '<table class="applicants-table"><tr><th>Name</th><th>Email</th><th>Role</th><th>Skills</th><th>Status</th><th>Action</th></tr>';
+                    data.applicants.forEach(app => {
+                        html += `<tr><td>${app.name}</td><td>${app.email}</td><td>${app.profile||''}</td><td>${app.skills||''}</td><td>${app.status||'Pending'}</td><td>`;
+                        if(app.status === 'Accepted' || app.status === 'Rejected') {
+                            html += app.status;
+                        } else {
+                            html += `<button class='accept-btn' onclick="updateApplicantStatus(${oppId},'${app.email}','Accepted')">Accept</button> <button class='reject-btn' onclick="updateApplicantStatus(${oppId},'${app.email}','Rejected')">Reject</button>`;
+                        }
+                        html += '</td></tr>';
+                    });
+                    html += '</table>';
+                }
+                document.getElementById('applicants-list').innerHTML = html;
+                document.getElementById('applicants-modal').style.display = 'block';
+            });
+    }
+    
+    function closeApplicantsModal() {
+        document.getElementById('applicants-modal').style.display = 'none';
+    }
+    
+    function updateApplicantStatus(oppId, email, status) {
+        fetch(`/update-applicant-status/${oppId}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({email, status})
+        })
+        .then(resp => resp.json())
+        .then(data => {
+            if(data.success) {
+                showApplicantsModal(oppId);
+            } else {
+                alert('Failed to update status');
+            }
+        });
+    }
+    
+    window.onclick = function(event) {
+        var modal = document.getElementById('applicants-modal');
+        if (event.target == modal) {
+            closeApplicantsModal();
+        }
+    }
+    </script>
+</body>
+</html>
