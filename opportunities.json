@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [
   {
     "id": 1,
@@ -437,4 +438,420 @@
       "nayaswanth@email.com": "Not Interested"
     }
   }
+=======
+[
+  {
+    "id": 1,
+    "title": "Internship oppty",
+    "role": "Consultant",
+    "team": "Internship team",
+    "duration": "8 weeks",
+    "commitment": "1 hour/ day",
+    "start_date": "Jun 1st, 2025",
+    "skills": "PMO, Team Management",
+    "openings": 2,
+    "createdBy": "nayaswanth@email.com",
+    "createdByName": "Yaswanth",
+    "createdAt": "Jul 10, 2025 01:10 PM",
+    "applicants": [
+      "nayaswanth@email.com",
+      "rohit@email.com",
+      "satyam@email.com"
+    ],
+    "status": "Closed"
+  },
+  {
+    "id": 2,
+    "title": "FInder Website Creation",
+    "role": "Consultant, Analyst",
+    "team": "FInder",
+    "duration": "8",
+    "commitment": "1",
+    "start_date": "2025-07-10",
+    "skills": "Webiste",
+    "openings": 1,
+    "createdBy": "rohit@email.com",
+    "createdByName": "Rohit",
+    "createdAt": "Jul 10, 2025 01:51 PM",
+    "applicants": [
+      "rohit@email.com",
+      "nayaswanth@email.com",
+      "satyam@email.com"
+    ],
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Rejected"
+    }
+  },
+  {
+    "id": 3,
+    "title": "L&D Consultant",
+    "role": "Consultant, Analyst",
+    "team": "L&D Team",
+    "duration": "1 Week",
+    "commitment": "1 hour/day",
+    "start_date": "2025-07-10",
+    "skills": "Data Analysis,Deck Preparation",
+    "openings": 2,
+    "createdBy": "satyam@email.com",
+    "createdByName": "Satyam",
+    "createdAt": "Jul 10, 2025 07:26 PM",
+    "applicants": [
+      "bajaj@email.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 4,
+    "title": "Financial Comparitive Analyis",
+    "role": "Senior Consultant, Analyst",
+    "team": "CVS Health",
+    "duration": "8 weeks",
+    "commitment": "5 hours/week",
+    "start_date": "2025-07-12",
+    "skills": "Data Analysis,Deck preparation",
+    "openings": 2,
+    "createdBy": "bajaj@email.com",
+    "createdByName": "Pranjay",
+    "createdAt": "Jul 11, 2025 09:49 AM",
+    "applicants": [
+      "abc@gmail.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 5,
+    "title": "Opp by ABC",
+    "role": "Consultant, Senior Consultant, Manager",
+    "team": "FINDER",
+    "duration": "3",
+    "commitment": "3",
+    "start_date": "2025-07-29",
+    "skills": "",
+    "openings": 3,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 01:09 PM",
+    "applicants": [
+      "yer@gmail.com"
+    ],
+    "status": "Applied"
+  },
+  {
+    "id": 6,
+    "title": "RFP-Pricing Transformation",
+    "role": "Consultant",
+    "team": "PSS",
+    "duration": "3 weeks",
+    "commitment": "3 hrs/day",
+    "start_date": "2025-07-31",
+    "skills": "Pricing",
+    "openings": 2,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 03:14 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 7,
+    "title": "Check 3",
+    "role": "Consultant, Senior Consultant, Manager",
+    "team": "check 3",
+    "duration": "1",
+    "commitment": "1",
+    "description": "asd",
+    "start_date": "2025-07-15",
+    "skills": "dsf",
+    "openings": 2,
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 11, 2025 05:49 PM",
+    "applicants": [],
+    "status": "Closed"
+  },
+  {
+    "id": 8,
+    "title": "check 12",
+    "role": "Consultant, Senior Consultant",
+    "team": "ched",
+    "duration": "2",
+    "commitment": "1",
+    "description": "pldsa",
+    "start_date": "2025-07-16",
+    "skills": "presentation,excel",
+    "openings": 2,
+    "createdBy": "yer@gmail.com",
+    "createdByName": "avi",
+    "createdAt": "Jul 11, 2025 06:04 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 9,
+    "title": "Check",
+    "role": "Manager",
+    "team": "Check",
+    "duration": 1,
+    "commitment": 1,
+    "description": "check",
+    "start_date": "2025-07-13",
+    "skills": "presentation",
+    "openings": 1,
+    "createdBy": "nayaswanth@email.com",
+    "createdByName": "Yaswanth",
+    "createdAt": "Jul 16, 2025 10:00 AM",
+    "applicants": [
+      "rohit@email.com",
+      "nayaswanth@email.com"
+    ],
+    "status": "Not Interested",
+    "applicants_status": {
+      "rohit@email.com": "Rejected",
+      "nayaswanth@email.com": "Accepted"
+    }
+  },
+  {
+    "id": 10,
+    "title": "Demo",
+    "role": "Senior Consultant",
+    "team": "asdf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "sadsa",
+    "start_date": "2025-07-10",
+    "skills": "sadf",
+    "openings": 1,
+    "createdBy": "hello123@gmail.com",
+    "createdByName": "hello",
+    "createdAt": "Jul 16, 2025 04:20 PM",
+    "applicants": [
+      "nayaswanth@email.com"
+    ],
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Accepted"
+    }
+  },
+  {
+    "id": 11,
+    "title": "Demo 2",
+    "role": "Manager",
+    "team": "asdf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asdf",
+    "start_date": "2025-07-03",
+    "skills": "asdf",
+    "openings": 1,
+    "createdBy": "hello123@gmail.com",
+    "createdByName": "hello",
+    "createdAt": "Jul 16, 2025 04:24 PM",
+    "applicants": [
+      "nayaswanth@email.com"
+    ],
+    "status": "Applied",
+    "applicants_status": {
+      "nayaswanth@email.com": "Rejected"
+    }
+  },
+  {
+    "id": 12,
+    "title": "Fin Impact modelling",
+    "role": "Consultant, Senior Consultant",
+    "team": "CS&D",
+    "duration": 3,
+    "commitment": 3,
+    "description": "Working on excel to create output on various scenerios",
+    "start_date": "2025-07-31",
+    "skills": "Excel,Data Analysis",
+    "openings": 2,
+    "createdBy": "satyam@gmail.com",
+    "createdByName": "Kumar Satyam",
+    "createdAt": "Jul 21, 2025 11:42 AM",
+    "applicants": [
+      "satyam@gmail.com",
+      "abc@gmail.com"
+    ],
+    "status": "Closed",
+    "not_interested": []
+  },
+  {
+    "id": 13,
+    "title": "Post by ABC",
+    "role": "Consultant",
+    "team": "CSD",
+    "duration": 2,
+    "commitment": 4,
+    "description": "Need to work",
+    "start_date": "2025-07-24",
+    "skills": "Python",
+    "openings": 1,
+    "type_of_fi": "CS&D Ops",
+    "domain": "Commerce",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 21, 2025 01:19 PM",
+    "applicants": [
+      "role@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
+  },
+  {
+    "id": 14,
+    "title": "dsfg",
+    "role": "Senior Consultant",
+    "team": "adf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asdf",
+    "start_date": "2025-07-08",
+    "skills": "",
+    "openings": 1,
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "role@gmail.com",
+    "createdByName": "role",
+    "createdAt": "Jul 21, 2025 04:08 PM",
+    "applicants": [],
+    "status": "Open",
+    "not_interested": [
+      "role@gmail.com"
+    ],
+    "user_status": {
+      "role@gmail.com": "Not Interested"
+    }
+  },
+  {
+    "id": 15,
+    "title": "adsfadf",
+    "role": "Senior Consultant",
+    "team": "adf",
+    "duration": 1,
+    "commitment": 1,
+    "description": "adf",
+    "start_date": "2025-07-18",
+    "skills": "Report Writing",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:25 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Rejected"
+    }
+  },
+  {
+    "id": 16,
+    "title": "asd",
+    "role": "Senior Consultant",
+    "team": "as",
+    "duration": 1,
+    "commitment": 1,
+    "description": "asd",
+    "start_date": "2025-07-02",
+    "skills": "Document Structuring",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:25 PM",
+    "applicants": [],
+    "status": "Open"
+  },
+  {
+    "id": 17,
+    "title": "pl",
+    "role": "Senior Consultant",
+    "team": "klm",
+    "duration": 1,
+    "commitment": 1,
+    "description": "klnm",
+    "start_date": "2025-07-10",
+    "skills": "Presentation",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:28 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Accepted"
+    }
+  },
+  {
+    "id": 18,
+    "title": "qwerty",
+    "role": "Senior Consultant",
+    "team": "sad",
+    "duration": 1,
+    "commitment": 1,
+    "description": "sad",
+    "start_date": "2025-07-03",
+    "skills": "Presentation",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "hello@gmail.com",
+    "createdByName": "Hello",
+    "createdAt": "Jul 21, 2025 04:31 PM",
+    "applicants": [
+      "hello@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": [],
+    "applicants_status": {
+      "hello@gmail.com": "Accepted"
+    }
+  },
+  {
+    "id": 19,
+    "title": "aaaa",
+    "role": "Manager",
+    "duration": 2,
+    "commitment": 1,
+    "description": "aaaaabbbb cccc",
+    "start_date": "2025-07-25",
+    "skills": "Document Structuring",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 24, 2025 03:02 PM",
+    "applicants": [
+      "dsgjhwgj@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
+  },
+  {
+    "id": 20,
+    "title": "ppppppp",
+    "role": "Senior Consultant, Consultant",
+    "duration": 2,
+    "commitment": 1,
+    "description": "pppppppppp hhhhhh kkkkkkk",
+    "start_date": "2025-07-26",
+    "skills": "Data Analysis",
+    "type_of_fi": "Proposals/POV",
+    "domain": "Cross Domain",
+    "createdBy": "abc@gmail.com",
+    "createdByName": "ABC Gupta",
+    "createdAt": "Jul 24, 2025 03:03 PM",
+    "applicants": [
+      "abc@gmail.com"
+    ],
+    "status": "Open",
+    "not_interested": []
+  }
+>>>>>>> 7ebebb4bdf3daad564ba3e90fef4ab659b2acf35
 ]
